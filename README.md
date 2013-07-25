@@ -6,6 +6,8 @@ For more information, see the linked Github Wiki page.
 
 https://github.com/edmodo/range-bar/wiki
 
+![ScreenShot](http://i.imgur.com/q85GhRjl.png)
+
 License
 =======
 Copyright 2013, Edmodo, Inc. 
