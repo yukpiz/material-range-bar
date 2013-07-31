@@ -9,7 +9,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" 
  * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language 
  * governing permissions and limitations under the License. 
-*/
+ */
 
 package com.edmodo.rangebar;
 
@@ -33,11 +33,11 @@ class Thumb {
     // this value off of the recommended 48dp Rhythm. See:
     // http://developer.android.com/design/style/metrics-grids.html#48dp-rhythm
     private static final float MINIMUM_TARGET_RADIUS_DP = 24;
-    
+
     // Sets the default values for radius, normal, pressed if circle is to be
     // drawn but no value is given.
     private static final float DEFAULT_THUMB_RADIUS_DP = 14;
-    
+
     // Corresponds to android.R.color.holo_blue_light.
     private static final int DEFAULT_THUMB_COLOR_NORMAL = 0xff33b5e5;
     private static final int DEFAULT_THUMB_COLOR_PRESSED = 0xff33b5e5;
@@ -76,7 +76,7 @@ class Thumb {
 
     // Toggle to select bitmap thumbImage or not
     private boolean mUseBitmap;
-    
+
     // Colors of the thumbs if they are to be drawn
     private int mThumbColorNormal;
     private int mThumbColorPressed;
@@ -97,10 +97,12 @@ class Thumb {
         mImagePressed = BitmapFactory.decodeResource(res, thumbImagePressed);
 
         // If any of the attributes are set, toggle bitmap off
-        if (thumbRadiusDP == -1 && thumbColorNormal == -1 && thumbColorPressed == -1)
+        if (thumbRadiusDP == -1 && thumbColorNormal == -1 && thumbColorPressed == -1) {
+
             mUseBitmap = true;
 
-        else {
+        } else {
+
             mUseBitmap = false;
 
             // If one of the attributes are set, but the others aren't, set the
@@ -209,23 +211,22 @@ class Thumb {
 
         // If a bitmap is to be printed. Determined by thumbRadius attribute.
         if (mUseBitmap) {
+
             final Bitmap bitmap = (mIsPressed) ? mImagePressed : mImageNormal;
 
-            if (mIsPressed)
-            {
+            if (mIsPressed) {
                 final float topPressed = mY - mHalfHeightPressed;
                 final float leftPressed = mX - mHalfWidthPressed;
                 canvas.drawBitmap(bitmap, leftPressed, topPressed, null);
-            }
-            else
-            {
+            } else {
                 final float topNormal = mY - mHalfHeightNormal;
                 final float leftNormal = mX - mHalfWidthNormal;
                 canvas.drawBitmap(bitmap, leftNormal, topNormal, null);
             }
-        }
-        // Otherwise use a circle to display.
-        else {
+
+        } else {
+
+            // Otherwise use a circle to display.
             if (mIsPressed)
                 canvas.drawCircle(mX, mY, mThumbRadiusPx, mPaintPressed);
             else

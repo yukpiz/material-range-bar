@@ -9,7 +9,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" 
  * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language 
  * governing permissions and limitations under the License. 
-*/
+ */
 
 package com.edmodo.rangebar;
 
@@ -23,8 +23,6 @@ import android.util.TypedValue;
  * thumbs).
  */
 class Bar {
-
-    // Private Constants ///////////////////////////////////////////////////////
 
     // Member Variables ////////////////////////////////////////////////////////
 
@@ -132,6 +130,11 @@ class Bar {
         return nearestTickIndex;
     }
 
+    /**
+     * Set the number of ticks that will appear in the RangeBar.
+     * 
+     * @param tickCount the number of ticks
+     */
     void setTickCount(int tickCount) {
 
         final float barLength = mRightX - mLeftX;

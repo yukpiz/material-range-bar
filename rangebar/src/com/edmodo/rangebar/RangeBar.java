@@ -9,7 +9,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" 
  * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language 
  * governing permissions and limitations under the License. 
-*/
+ */
 
 package com.edmodo.rangebar;
 
@@ -109,7 +109,7 @@ public class RangeBar extends View {
     @Override
     public Parcelable onSaveInstanceState() {
 
-        Bundle bundle = new Bundle();
+        final Bundle bundle = new Bundle();
 
         bundle.putParcelable("instanceState", super.onSaveInstanceState());
 
@@ -139,7 +139,8 @@ public class RangeBar extends View {
     public void onRestoreInstanceState(Parcelable state) {
 
         if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
+
+            final Bundle bundle = (Bundle) state;
 
             mTickCount = bundle.getInt("TICK_COUNT");
             mTickHeightDP = bundle.getFloat("TICK_HEIGHT_DP");
@@ -162,10 +163,11 @@ public class RangeBar extends View {
             setThumbIndices(mLeftIndex, mRightIndex);
 
             super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
-            return;
-        }
 
-        super.onRestoreInstanceState(state);
+        } else {
+
+            super.onRestoreInstanceState(state);
+        }
     }
 
     @Override
@@ -327,7 +329,7 @@ public class RangeBar extends View {
             if (mFirstSetTickCount) {
                 mLeftIndex = 0;
                 mRightIndex = mTickCount - 1;
-                
+
                 if (mListener != null) {
                     mListener.onIndexChangeListener(this, mLeftIndex, mRightIndex);
                 }
@@ -502,10 +504,20 @@ public class RangeBar extends View {
 
     }
 
+    /**
+     * Gets the index of the left-most thumb.
+     * 
+     * @return the 0-based index of the left thumb
+     */
     public int getLeftIndex() {
         return mLeftIndex;
     }
 
+    /**
+     * Gets the index of the right-most thumb.
+     * 
+     * @return the 0-based index of the right thumb
+     */
     public int getRightIndex() {
         return mRightIndex;
     }
@@ -528,21 +540,24 @@ public class RangeBar extends View {
 
             // Sets the values of the user-defined attributes based on the XML
             // attributes.
-            Integer tickCount = ta.getInteger(R.styleable.RangeBar_tickCount, DEFAULT_TICK_COUNT);
-            if (isValidTickCount(tickCount))
-            {
+            final Integer tickCount = ta.getInteger(R.styleable.RangeBar_tickCount, DEFAULT_TICK_COUNT);
+
+            if (isValidTickCount(tickCount)) {
+
                 // Similar functions performed above in setTickCount; make sure
                 // you know how they interact
                 mTickCount = tickCount;
                 mLeftIndex = 0;
                 mRightIndex = mTickCount - 1;
-                
+
                 if (mListener != null) {
                     mListener.onIndexChangeListener(this, mLeftIndex, mRightIndex);
                 }
-            }
-            else
+
+            } else {
+
                 Log.e(TAG, "tickCount less than 2; invalid tickCount. XML input ignored.");
+            }
 
             mTickHeightDP = ta.getDimension(R.styleable.RangeBar_tickHeight, DEFAULT_TICK_HEIGHT_DP);
             mBarWeight = ta.getDimension(R.styleable.RangeBar_barWeight, DEFAULT_BAR_WEIGHT_PX);
@@ -561,6 +576,7 @@ public class RangeBar extends View {
                                              DEFAULT_THUMB_COLOR_PRESSED);
 
         } finally {
+
             ta.recycle();
         }
 
