@@ -4,9 +4,11 @@ package com.example.rangebarsample;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,16 +90,25 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         setContentView(R.layout.activity_main);
 
         // Sets fonts for all
-        Typeface mFont = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
+        Typeface font = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
         ViewGroup root = (ViewGroup) findViewById(R.id.mylayout);
-        setFont(root, mFont);
+        setFont(root, font);
 
-        // Gets the buttons references for the Color Buttons
+        // Gets the buttons references for the buttons
         final Button barColor = (Button) findViewById(R.id.barColor);
         final Button connectingLineColor = (Button) findViewById(R.id.connectingLineColor);
         final Button thumbColorNormal = (Button) findViewById(R.id.thumbColorNormal);
         final Button thumbColorPressed = (Button) findViewById(R.id.thumbColorPressed);
         final Button resetThumbColors = (Button) findViewById(R.id.resetThumbColors);
+        final Button refreshButton = (Button) findViewById(R.id.refresh);
+        
+        //Sets the buttons to bold.
+        refreshButton.setTypeface(font,Typeface.BOLD);
+        barColor.setTypeface(font,Typeface.BOLD);
+        connectingLineColor.setTypeface(font,Typeface.BOLD);
+        thumbColorNormal.setTypeface(font,Typeface.BOLD);
+        thumbColorPressed.setTypeface(font,Typeface.BOLD);
+        resetThumbColors.setTypeface(font,Typeface.BOLD);
 
         // Sets initial colors for the Color buttons
         barColor.setTextColor(DEFAULT_BAR_COLOR);
@@ -125,8 +136,7 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         });
 
         // Sets the indices themselves upon input from the user
-        Button button = (Button) findViewById(R.id.refresh);
-        button.setOnClickListener(new View.OnClickListener() {
+        refreshButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 // Gets the String values of all the texts
@@ -396,7 +406,13 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
      */
     private void initColorPicker(Component component, int initialColor, int defaultColor)
     {
-        new ColorPickerDialog(this, this, component, initialColor, defaultColor).show();
+        ColorPickerDialog colorPicker = new ColorPickerDialog(this,
+                                                              this,
+                                                              component,
+                                                              initialColor,
+                                                              defaultColor);
+        colorPicker.show();
+
     }
 
 }
