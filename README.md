@@ -21,6 +21,8 @@ If any of the following attributes are specified, the thumb images will be ignor
 Finally, the following property can be set programmatically, but not via XML:
 - thumb indices (the location of the thumbs on the RangeBar)
 
+Supported on API Level 7 and above.
+
 For more information, see the linked Github Wiki page.
 
 https://github.com/edmodo/range-bar/wiki
