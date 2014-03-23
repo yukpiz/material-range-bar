@@ -288,7 +288,7 @@ public class RangeBar extends View {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 this.getParent().requestDisallowInterceptTouchEvent(false);
-                onActionUp();
+                onActionUp(event.getX(), event.getY());
                 return true;
 
             case MotionEvent.ACTION_MOVE:
@@ -723,8 +723,11 @@ public class RangeBar extends View {
     /**
      * Handles a {@link MotionEvent#ACTION_UP} or
      * {@link MotionEvent#ACTION_CANCEL} event.
+     * 
+     * @param x the x-coordinate of the up action
+     * @param y the y-coordinate of the up action
      */
-    private void onActionUp() {
+    private void onActionUp(float x, float y) {
 
         if (mLeftThumb.isPressed()) {
 
@@ -733,7 +736,30 @@ public class RangeBar extends View {
         } else if (mRightThumb.isPressed()) {
 
             releaseThumb(mRightThumb);
+        } else {
+        	
+        	float leftThumbXDistance = abs(mLeftThumb.getX() - x);
+            float rightThumbXDistance = abs(mRightThumb.getX() - x);
+            if(leftThumbXDistance < rightThumbXDistance){
+            	mLeftThumb.setX(x);
+            	releaseThumb(mLeftThumb);
+            } else {
+            	mRightThumb.setX(x);
+            	releaseThumb(mRightThumb);
+            }
+//            invalidate();
         }
+        
+    }
+
+	/**
+	 * returns the abloute value of a float
+	 * 
+	 * @param a
+	 * @return
+	 */
+    private static float abs(float a) {
+        return (a <= 0.0F) ? 0.0F - a : a;
     }
 
     /**
