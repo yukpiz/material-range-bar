@@ -1,8 +1,11 @@
 <resources>
 
     <declare-styleable name="RangeBar">
-        <attr name="tickCount" format="integer" />
+        <attr name="tickStart" format="float"/>
+        <attr name="tickEnd" format="float"/>
+        <attr name="tickInterval" format="float"/>
         <attr name="tickHeight" format="dimension" />
+        <attr name="tickColor" format="color"/>
         <attr name="barWeight" format="dimension" />
         <attr name="barColor" format="reference|color" />
         <attr name="connectingLineWeight" format="dimension" />

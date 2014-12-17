@@ -1,199 +1,252 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/white">
 
     <LinearLayout
-        android:id="@+id/mylayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".MainActivity" >
+            android:id="@+id/mylayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            tools:context=".MainActivity">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/title"
-            android:textSize="40sp" />
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="center"
+                android:text="@string/title"
+                android:textSize="40sp"
+                android:background="@color/indigo500"
+                android:textColor="@color/white"/>
 
-        <com.edmodo.rangebar.RangeBar
-            xmlns:custom="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/rangebar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="50dp"
-            custom:tickCount="7" />
+        <com.appyvet.rangebar.RangeBar
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rangebar1"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                custom:tickStart="5"
+                custom:tickInterval="1"
+                custom:tickEnd="10"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+        <com.appyvet.rangebar.SeekBar
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                custom:tickStart="3"
+                custom:tickInterval="1"
+                custom:connectingLineWeight="3dp"
+                custom:barWeight="2dp"
+                custom:tickHeight="1.5dp"
+                custom:tickColor="@android:color/black"
+                custom:tickEnd="10"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+        <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                layout="@layout/divider"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp" >
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal" >
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical" >
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/leftIndex"
-                        style="@style/RoboTheme"
-                        android:layout_marginTop="0dp"
-                        android:text="@string/leftIndex" />
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/leftIndexValue"
-                        style="@style/RoboTheme"
-                        android:layout_marginTop="0dp"
-                        android:inputType="number"
-                        android:text="@string/leftIndexValue"
-                        android:textSize="35sp" />
+                        <TextView
+                                android:id="@+id/leftIndex"
+                                style="@style/RoboTheme"
+                                android:layout_marginTop="0dp"
+                                android:text="@string/leftIndex"/>
+
+                        <EditText
+                                android:id="@+id/leftIndexValue"
+                                style="@style/RoboTheme"
+                                android:layout_marginTop="0dp"
+                                android:inputType="number"
+                                android:text="@string/leftIndexValue"
+                                android:textSize="35sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/rightIndex"
+                                style="@style/RoboTheme"
+                                android:layout_marginTop="0dp"
+                                android:text="@string/rightIndex"/>
+
+                        <EditText
+                                android:id="@+id/rightIndexValue"
+                                style="@style/RoboTheme"
+                                android:layout_marginTop="0dp"
+                                android:inputType="number"
+                                android:text="@string/rightIndexValue"
+                                android:textSize="35sp"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical" >
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/rightIndex"
-                        style="@style/RoboTheme"
-                        android:layout_marginTop="0dp"
-                        android:text="@string/rightIndex" />
+                            android:id="@+id/setIndex"
+                            android:layout_gravity="center"
+                            android:text="@string/indexSet"
+                            android:textColor="@android:color/secondary_text_light"
+                            android:layout_height="48dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textSize="16sp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:textAllCaps="true"/>
 
-                    <EditText
-                        android:id="@+id/rightIndexValue"
-                        style="@style/RoboTheme"
-                        android:layout_marginTop="0dp"
-                        android:inputType="number"
-                        android:text="@string/rightIndexValue"
-                        android:textSize="35sp" />
+                    <TextView
+                            android:id="@+id/setValue"
+                            android:layout_gravity="center"
+                            android:text="@string/valueSet"
+                            android:textColor="@android:color/secondary_text_light"
+                            android:layout_height="48dp"
+                            android:background="@drawable/shadow"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textSize="16sp"
+                            android:textAllCaps="true"/>
+
                 </LinearLayout>
+                ♥
+
+                <TextView
+                        android:id="@+id/tickStart"
+                        style="@style/RoboTheme"
+                        android:text="@string/tickStart"/>
+
+                <SeekBar
+                        android:id="@+id/tickStartSeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progress="5"/>
+
+                <TextView
+                        android:id="@+id/tickEnd"
+                        style="@style/RoboTheme"
+                        android:text="@string/tickEnd"/>
+
+                <SeekBar
+                        android:id="@+id/tickEndSeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progress="10"/>
+
+                <TextView
+                        android:id="@+id/tickInterval"
+                        style="@style/RoboTheme"
+                        android:text="@string/tickInterval"/>
+
+                <SeekBar
+                        android:id="@+id/tickIntervalSeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progress="10"
+                        android:max="20"/>
+
+                <TextView
+                        android:id="@+id/barWeight"
+                        style="@style/RoboTheme"
+                        android:text="@string/barWeight"/>
+
+                <SeekBar
+                        android:id="@+id/barWeightSeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="8"
+                        android:progress="2"/>
+
+                <TextView
+                        android:id="@+id/connectingLineWeight"
+                        style="@style/RoboTheme"
+                        android:text="@string/connectingLineWeight"/>
+
+                <SeekBar
+                        android:id="@+id/connectingLineWeightSeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="15"
+                        android:progress="4"/>
+
+                <TextView
+                        android:id="@+id/thumbRadius"
+                        style="@style/RoboTheme"
+                        android:text="@string/thumbRadius"/>
+
+                <SeekBar
+                        android:id="@+id/thumbRadiusSeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="30"
+                        android:progress="0"/>
+
+                <Button
+                        android:id="@+id/barColor"
+                        style="@style/RoboTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/barColor"/>
+
+                <Button
+                        android:id="@+id/connectingLineColor"
+                        style="@style/RoboTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/connectingLineColor"/>
+
+                <Button
+                        android:id="@+id/pinColor"
+                        style="@style/RoboTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/thumbColorNormal"/>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/refresh"
-                style="@style/RoboTheme"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/refresh"
-                android:textColor="#33B5E5"
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/tickCount"
-                style="@style/RoboTheme"
-                android:text="@string/tickCount" />
-
-            <SeekBar
-                android:id="@+id/tickCountSeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:progress="7" />
-
-            <TextView
-                android:id="@+id/tickHeight"
-                style="@style/RoboTheme"
-                android:text="@string/tickHeight" />
-
-            <SeekBar
-                android:id="@+id/tickHeightSeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="75"
-                android:progress="24" />
-
-            <TextView
-                android:id="@+id/barWeight"
-                style="@style/RoboTheme"
-                android:text="@string/barWeight" />
-
-            <SeekBar
-                android:id="@+id/barWeightSeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="8"
-                android:progress="2" />
-
-            <TextView
-                android:id="@+id/connectingLineWeight"
-                style="@style/RoboTheme"
-                android:text="@string/connectingLineWeight" />
-
-            <SeekBar
-                android:id="@+id/connectingLineWeightSeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="15"
-                android:progress="4" />
-
-            <TextView
-                android:id="@+id/thumbRadius"
-                style="@style/RoboTheme"
-                android:text="@string/thumbRadius" />
-
-            <SeekBar
-                android:id="@+id/thumbRadiusSeek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="30"
-                android:progress="0" />
-
-            <Button
-                android:id="@+id/barColor"
-                style="@style/RoboTheme"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/barColor" />
-
-            <Button
-                android:id="@+id/connectingLineColor"
-                style="@style/RoboTheme"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/connectingLineColor" />
-
-            <Button
-                android:id="@+id/thumbColorNormal"
-                style="@style/RoboTheme"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/thumbColorNormal" />
-
-            <Button
-                android:id="@+id/thumbColorPressed"
-                style="@style/RoboTheme"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/thumbColorPressed" />
-
-            <Button
-                android:id="@+id/resetThumbColors"
-                style="@style/RoboTheme"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/resetThumbColors"
-                android:textColor="@android:color/holo_red_light" />
         </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

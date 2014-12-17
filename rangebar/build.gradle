@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 version = "1.0.0"
-group = "com.edmodo"
+group = "com.appyvet"
 
 android {
 
@@ -44,10 +44,6 @@ uploadArchives {
     repositories.mavenDeployer {
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-        repository(url: sonatypeRepo) {
-            authentication(userName: sonatypeUsername,
-                    password: sonatypePassword)
-        }
 
         pom.project {
             name 'RangeBar'
