@@ -14,7 +14,7 @@ Developers can customize the following attributes (both via XML and programmatic
 - tick color
 - tick start value
 - tick end value
-- number of ticks
+- tick interval
 - connecting line thickness
 - connecting line color
 - pin size
@@ -28,10 +28,21 @@ Supported on API Level 12 and above for animations.
 
 ![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
 
+Instructions
+=======
+- Add the widget to your view.
+- Either in xml (rangeBar="true") or programatically (rangeBar.setRangeBarEnabled(true)). If true will create two "pins" for a range bar, if false, will act as a single seek bar.
+- Set start and end values, as well as interval. These are float values, the view will autoatically calculate the correct indices/tick count.
+- Add a listener - rangeBar.setOnRangeBarChangeListener which returns left and right index as well as value.
+- Style the view as you want.
+- That's it!
+
+
 TODO
 =======
-- Better instructions!
+- Better instructions.
 - Properly implement Map of strings to each value
+- Generally make it a better project!
 
 Demo
 =======
