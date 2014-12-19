@@ -21,6 +21,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -121,7 +122,7 @@ class ThumbView extends View {
 
         // Sets the minimum touchable area, but allows it to expand based on
         // image size
-        int targetRadius = (int) Math.max(MINIMUM_TARGET_RADIUS_DP, thumbRadiusDP);
+        int targetRadius = (int) Math.max(MINIMUM_TARGET_RADIUS_DP, mThumbRadiusPx);
 
         mTargetRadiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 targetRadius,
@@ -159,6 +160,7 @@ class ThumbView extends View {
     }
 
     void setSize(float size, float padding) {
+        Log.d("padding", "set padding = " + padding);
         mPinPadding = (int) padding;
         mThumbRadiusPx = (int) size;
         invalidate();
@@ -185,23 +187,31 @@ class ThumbView extends View {
 
     @Override
     public void draw(Canvas canvas) {
-        mBounds.set((int) mX - mThumbRadiusPx, (int) mY - (mThumbRadiusPx * 2) - (int) mPinPadding,
-                (int) mX + mThumbRadiusPx, (int) mY - (int) mPinPadding);
-        mPin.setBounds(mBounds);
         canvas.drawCircle(mX, mY, mCircleRadiusPx, mCirclePaint);
-        String text = mValue;
-        if (mValue.length() > 4) {
-            text = mValue.substring(0, 4);
+        //Draw pin if pressed
+        if (mThumbRadiusPx > 0) {
+            mBounds.set((int) mX - mThumbRadiusPx,
+                    (int) mY - (mThumbRadiusPx * 2) - (int) mPinPadding,
+                    (int) mX + mThumbRadiusPx, (int) mY - (int) mPinPadding);
+            mPin.setBounds(mBounds);
+            String text = mValue;
+            if (mValue.length() > 4) {
+                text = mValue.substring(0, 4);
+            }
+            calibrateTextSize(mTextPaint, text, 8, 24, mBounds.width());
+            mTextPaint.getTextBounds(text, 0, text.length(), mBounds);
+            mTextPaint.setTextAlign(Paint.Align.CENTER);
+            mPin.setColorFilter(mPinFilter);
+            mPin.draw(canvas);
+            canvas.drawText(text,
+                    mX, mY - mThumbRadiusPx - mPinPadding + mTextYPadding,
+                    mTextPaint);
         }
-        mTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                mPinPadding / 2, mRes.getDisplayMetrics()));
-        mTextPaint.getTextBounds(text, 0, text.length(), mBounds);
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mPin.setColorFilter(mPinFilter);
-        mPin.draw(canvas);
-        canvas.drawText(text,
-                mX, mY - mThumbRadiusPx - mPinPadding + mTextYPadding,
-                mTextPaint);
     }
 
+    private static void calibrateTextSize(Paint paint, String text, float min, float max,
+            float boxWidth) {
+        paint.setTextSize(10);
+        paint.setTextSize(Math.max(Math.min((boxWidth / paint.measureText(text)) * 10, max), min));
+    }
 }

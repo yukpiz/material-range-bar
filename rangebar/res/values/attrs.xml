@@ -9,15 +9,12 @@
         <attr name="barWeight" format="dimension" />
         <attr name="barColor" format="reference|color" />
         <attr name="selectorSize" format="dimension" />
+        <attr name="pinPadding" format="dimension" />
         <attr name="selectorColor" format="reference|color" />
         <attr name="rangeBar" format="boolean" />
         <attr name="connectingLineWeight" format="dimension" />
         <attr name="connectingLineColor" format="reference|color" />
-        <attr name="thumbRadius" format="dimension" />
-        <attr name="thumbImageNormal" format="reference" />
-        <attr name="thumbImagePressed" format="reference" />
-        <attr name="thumbColorNormal" format="reference|color"/>
-        <attr name="thumbColorPressed" format="reference|color"/>
+        <attr name="pinRadius" format="dimension" />
     </declare-styleable>
 
 </resources>

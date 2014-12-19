@@ -6,12 +6,13 @@
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity"
+        android:background="@color/white">
 
     <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="130dp"
             android:gravity="center"
             android:text="@string/title"
             android:textSize="40sp"
@@ -22,7 +23,7 @@
             xmlns:custom="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rangebar1"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="72dp"
             custom:tickStart="5"
             custom:tickInterval="1"
             custom:tickEnd="10"

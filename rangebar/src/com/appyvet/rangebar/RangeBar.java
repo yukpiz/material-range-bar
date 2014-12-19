@@ -69,6 +69,8 @@ public class RangeBar extends View {
 
     private static final float DEFAULT_TICK_HEIGHT_DP = 1;
 
+    private static final float DEFAULT_PIN_PADDING_DP = 16;
+
     private static final float DEFAULT_BAR_WEIGHT_PX = 2;
 
     private static final int DEFAULT_BAR_COLOR = Color.LTGRAY;
@@ -149,6 +151,8 @@ public class RangeBar extends View {
 
     private boolean mIsRangeBar = true;
 
+    private float mPinPadding = DEFAULT_PIN_PADDING_DP;
+
     // Constructors ////////////////////////////////////////////////////////////
 
     public RangeBar(Context context) {
@@ -190,6 +194,7 @@ public class RangeBar extends View {
         bundle.putInt("CIRCLE_COLOR", mCircleColor);
         bundle.putFloat("THUMB_RADIUS_DP", mThumbRadiusDP);
         bundle.putFloat("EXPANDED_PIN_RADIUS_DP", mExpandedPinRadius);
+        bundle.putFloat("PIN_PADDING", mPinPadding);
         bundle.putBoolean("IS_RANGE_BAR", mIsRangeBar);
         bundle.putInt("LEFT_INDEX", mLeftIndex);
         bundle.putInt("RIGHT_INDEX", mRightIndex);
@@ -221,6 +226,7 @@ public class RangeBar extends View {
 
             mThumbRadiusDP = bundle.getFloat("THUMB_RADIUS_DP");
             mExpandedPinRadius = bundle.getFloat("EXPANDED_PIN_RADIUS_DP");
+            mPinPadding = bundle.getFloat("PIN_PADDING");
             mIsRangeBar = bundle.getBoolean("IS_RANGE_BAR");
 
             mLeftIndex = bundle.getInt("LEFT_INDEX");
@@ -277,8 +283,8 @@ public class RangeBar extends View {
 
         // This is the initial point at which we know the size of the View.
 
-        // Create the two thumb objects.
-        final float yPos = h / 1.5f;
+        // Create the two thumb objects and position line in view
+        final float yPos = h / 1.25f;
         if (mIsRangeBar) {
             mLeftThumb = new ThumbView(ctx);
             mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
@@ -534,6 +540,7 @@ public class RangeBar extends View {
         mBarColor = barColor;
         createBar();
     }
+
     /**
      * Set the color of the bar line and the tick lines in the range bar.
      *
@@ -564,6 +571,7 @@ public class RangeBar extends View {
         mTickColor = tickColor;
         createBar();
     }
+
     /**
      * Set the color of the selector.
      *
@@ -772,8 +780,11 @@ public class RangeBar extends View {
             mConnectingLineColor = ta.getColor(R.styleable.RangeBar_connectingLineColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
             mExpandedPinRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    ta.getDimension(R.styleable.RangeBar_thumbRadius,
+                    ta.getDimension(R.styleable.RangeBar_pinRadius,
                             DEFAULT_EXPANDED_PIN_RADIUS_DP), getResources().getDisplayMetrics());
+            mPinPadding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    ta.getDimension(R.styleable.RangeBar_pinPadding,
+                            DEFAULT_PIN_PADDING_DP), getResources().getDisplayMetrics());
             mIsRangeBar = ta.getBoolean(R.styleable.RangeBar_rangeBar, true);
 
         } finally {
@@ -1033,7 +1044,7 @@ public class RangeBar extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mThumbRadiusDP = (Float) (animation.getAnimatedValue());
-                thumb.setSize(mThumbRadiusDP, 30 * animation.getAnimatedFraction());
+                thumb.setSize(mThumbRadiusDP, mPinPadding * animation.getAnimatedFraction());
                 invalidate();
             }
         });
@@ -1060,7 +1071,8 @@ public class RangeBar extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mThumbRadiusDP = (Float) (animation.getAnimatedValue());
-                thumb.setSize(mThumbRadiusDP, 30 - (30 * animation.getAnimatedFraction()));
+                thumb.setSize(mThumbRadiusDP,
+                        mPinPadding - (mPinPadding * animation.getAnimatedFraction()));
                 invalidate();
             }
         });
