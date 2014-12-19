@@ -187,7 +187,7 @@ public class RangeBar extends View {
         bundle.putInt("CONNECTING_LINE_COLOR", mConnectingLineColor);
 
         bundle.putFloat("CIRCLE_SIZE", mCircleSize);
-        bundle.putInt("CIRCL_COLOR", mCircleColor);
+        bundle.putInt("CIRCLE_COLOR", mCircleColor);
         bundle.putFloat("THUMB_RADIUS_DP", mThumbRadiusDP);
         bundle.putFloat("EXPANDED_PIN_RADIUS_DP", mExpandedPinRadius);
         bundle.putBoolean("IS_RANGE_BAR", mIsRangeBar);
@@ -215,7 +215,7 @@ public class RangeBar extends View {
             mBarWeight = bundle.getFloat("BAR_WEIGHT");
             mBarColor = bundle.getInt("BAR_COLOR");
             mCircleSize = bundle.getFloat("CIRCLE_SIZE");
-            mCircleColor = bundle.getInt("CIRCL_COLOR");
+            mCircleColor = bundle.getInt("CIRCLE_COLOR");
             mConnectingLineWeight = bundle.getFloat("CONNECTING_LINE_WEIGHT");
             mConnectingLineColor = bundle.getInt("CONNECTING_LINE_COLOR");
 

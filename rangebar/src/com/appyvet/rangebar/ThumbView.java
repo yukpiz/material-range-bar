@@ -114,6 +114,7 @@ class ThumbView extends View {
         // Creates the paint and sets the Paint values
         mCirclePaint = new Paint();
         mCirclePaint.setColor(circleColor);
+        mCirclePaint.setAntiAlias(true);
 
         //Color filter for the selection pin
         mPinFilter = new LightingColorFilter(pinColor, pinColor);
