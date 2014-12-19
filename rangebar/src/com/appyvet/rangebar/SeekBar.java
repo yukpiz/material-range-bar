@@ -85,7 +85,7 @@ public class SeekBar extends View {
     // Corresponds to material indigo 500.
     private static final int DEFAULT_CONNECTING_LINE_COLOR = 0xff3f51b5;
 
-    private static final float DEFAULT_THUMB_RADIUS_DP = 14;
+    private static final float DEFAULT_EXPANDED_PIN_RADIUS_DP = 14;
 
     private static final float DEFAULT_CIRCLE_SIZE_DP = 5;
 
@@ -111,15 +111,16 @@ public class SeekBar extends View {
 
     private int mConnectingLineColor = DEFAULT_CONNECTING_LINE_COLOR;
 
-    private float mThumbRadiusDP = DEFAULT_THUMB_RADIUS_DP;
+    private float mThumbRadiusDP = DEFAULT_EXPANDED_PIN_RADIUS_DP;
 
     private int mTickColor = DEFAULT_TICK_COLOR;
 
-    private float mExpandedPinRadius;
+    private float mExpandedPinRadius = DEFAULT_EXPANDED_PIN_RADIUS_DP;
 
     private int mCircleColor = DEFAULT_CONNECTING_LINE_COLOR;
 
     private float mCircleSize = DEFAULT_CIRCLE_SIZE_DP;
+
     // setTickCount only resets indices before a thumb has been pressed or a
     // setThumbIndices() is called, to correspond with intended usage
     private boolean mFirstSetTickCount = true;
@@ -143,7 +144,6 @@ public class SeekBar extends View {
     private int mLeftIndex;
 
     private int mRightIndex;
-
 
     // Constructors ////////////////////////////////////////////////////////////
 
@@ -186,6 +186,7 @@ public class SeekBar extends View {
         bundle.putInt("CONNECTING_LINE_COLOR", mConnectingLineColor);
 
         bundle.putFloat("THUMB_RADIUS_DP", mThumbRadiusDP);
+        bundle.putFloat("EXPANDED_PIN_RADIUS_DP", mExpandedPinRadius);
 
         bundle.putInt("LEFT_INDEX", mLeftIndex);
         bundle.putInt("RIGHT_INDEX", mRightIndex);
@@ -216,6 +217,7 @@ public class SeekBar extends View {
             mConnectingLineColor = bundle.getInt("CONNECTING_LINE_COLOR");
 
             mThumbRadiusDP = bundle.getFloat("THUMB_RADIUS_DP");
+            mExpandedPinRadius = bundle.getFloat("EXPANDED_PIN_RADIUS_DP");
 
             mLeftIndex = bundle.getInt("LEFT_INDEX");
             mRightIndex = bundle.getInt("RIGHT_INDEX");
@@ -698,19 +700,18 @@ public class SeekBar extends View {
                     .getDimension(R.styleable.RangeBar_tickHeight, DEFAULT_TICK_HEIGHT_DP);
             mBarWeight = ta.getDimension(R.styleable.RangeBar_barWeight, DEFAULT_BAR_WEIGHT_PX);
             mBarColor = ta.getColor(R.styleable.RangeBar_barColor, DEFAULT_BAR_COLOR);
-            mCircleSize = ta.getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP);
             mCircleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    mCircleSize, getResources().getDisplayMetrics());
-            mCircleColor = ta.getColor(R.styleable.RangeBar_selectorColor, DEFAULT_CONNECTING_LINE_COLOR);
+                    ta.getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP), getResources().getDisplayMetrics());
+            mCircleColor = ta
+                    .getColor(R.styleable.RangeBar_selectorColor, DEFAULT_CONNECTING_LINE_COLOR);
             mTickColor = ta.getColor(R.styleable.RangeBar_tickColor, DEFAULT_TICK_COLOR);
             mConnectingLineWeight = ta.getDimension(R.styleable.RangeBar_connectingLineWeight,
                     DEFAULT_CONNECTING_LINE_WEIGHT_PX);
             mConnectingLineColor = ta.getColor(R.styleable.RangeBar_connectingLineColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
-            mExpandedPinRadius = ta
-                    .getDimension(R.styleable.RangeBar_thumbRadius, DEFAULT_THUMB_RADIUS_DP);
             mExpandedPinRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    mExpandedPinRadius, getResources().getDisplayMetrics());
+                    ta.getDimension(R.styleable.RangeBar_thumbRadius,
+                            DEFAULT_EXPANDED_PIN_RADIUS_DP), getResources().getDisplayMetrics());
         } finally {
 
             ta.recycle();

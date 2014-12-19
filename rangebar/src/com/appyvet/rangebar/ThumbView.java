@@ -66,7 +66,7 @@ class ThumbView extends View {
     // Radius of the new thumb if selected
     private int mThumbRadiusPx;
 
-    private ColorFilter mFilter;
+    private ColorFilter mPinFilter;
 
     private float mPinPadding;
 
@@ -114,11 +114,9 @@ class ThumbView extends View {
         // Creates the paint and sets the Paint values
         mCirclePaint = new Paint();
         mCirclePaint.setColor(circleColor);
-        mCirclePaint.setAntiAlias(true);
-        mCirclePaint.setTextSize(textSize);
 
         //Color filter for the selection pin
-        mFilter = new LightingColorFilter(pinColor, pinColor);
+        mPinFilter = new LightingColorFilter(pinColor, pinColor);
 
         // Sets the minimum touchable area, but allows it to expand based on
         // image size
@@ -198,7 +196,7 @@ class ThumbView extends View {
                 mPinPadding / 2, mRes.getDisplayMetrics()));
         mTextPaint.getTextBounds(text, 0, text.length(), mBounds);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mPin.setColorFilter(mFilter);
+        mPin.setColorFilter(mPinFilter);
         mPin.draw(canvas);
         canvas.drawText(text,
                 mX, mY - mThumbRadiusPx - mPinPadding + mTextYPadding,

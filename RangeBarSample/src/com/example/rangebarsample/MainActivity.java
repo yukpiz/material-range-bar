@@ -28,8 +28,12 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
 
     private int mPinColor;
 
+    private int mTickColor;
+
     // Initializes the RangeBar in the application
     private RangeBar rangebar;
+
+    private int mSelectorColor;
 
     // Saves the state upon rotating the screen/restarting the activity
     @Override
@@ -83,17 +87,27 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         final Button barColor = (Button) findViewById(R.id.barColor);
         final Button connectingLineColor = (Button) findViewById(R.id.connectingLineColor);
         final Button pinColor = (Button) findViewById(R.id.pinColor);
+        final Button tickColor = (Button) findViewById(R.id.tickColor);
+        final Button selectorColor = (Button) findViewById(R.id.selectorColor);
         final TextView indexButton = (TextView) findViewById(R.id.setIndex);
         final TextView valueButton = (TextView) findViewById(R.id.setValue);
+        final TextView rangeButton = (TextView) findViewById(R.id.enableRange);
 
         //Sets the buttons to bold.
         indexButton.setTypeface(font, Typeface.BOLD);
-        barColor.setTypeface(font,Typeface.BOLD);
-        connectingLineColor.setTypeface(font,Typeface.BOLD);
+        barColor.setTypeface(font, Typeface.BOLD);
+        connectingLineColor.setTypeface(font, Typeface.BOLD);
         pinColor.setTypeface(font, Typeface.BOLD);
 
         // Gets the RangeBar
         rangebar = (RangeBar) findViewById(R.id.rangebar1);
+
+        rangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rangebar.setRangeBarEnabled(!rangebar.isRangeBar());
+            }
+        });
 
         // Setting Index Values -------------------------------
 
@@ -252,7 +266,8 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         SeekBar connectingLineWeightSeek = (SeekBar) findViewById(R.id.connectingLineWeightSeek);
         connectingLineWeightSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar connectingLineWeightSeek, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar connectingLineWeightSeek, int progress,
+                    boolean fromUser) {
                 rangebar.setConnectingLineWeight(progress);
                 connectingLineWeight.setText("connectingLineWeight = " + progress);
             }
@@ -274,11 +289,10 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
             public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser) {
                 if (progress == 0) {
                     rangebar.setThumbRadius(-1);
-                    thumbRadius.setText("thumbRadius = N/A");
-                }
-                else {
+                    thumbRadius.setText("Pin Radius = 30");
+                } else {
                     rangebar.setThumbRadius(progress);
-                    thumbRadius.setText("thumbRadius = " + progress);
+                    thumbRadius.setText("Pin Radius = " + progress);
                 }
             }
 
@@ -303,7 +317,8 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         // Sets connectingLineColor
         connectingLineColor.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                initColorPicker(Component.CONNECTING_LINE_COLOR, mConnectingLineColor, mConnectingLineColor);
+                initColorPicker(Component.CONNECTING_LINE_COLOR, mConnectingLineColor,
+                        mConnectingLineColor);
             }
         });
 
@@ -313,22 +328,33 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
                 initColorPicker(Component.PIN_COLOR, mPinColor, mPinColor);
             }
         });
+        // Sets tickColor
+        tickColor.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                initColorPicker(Component.TICK_COLOR, mTickColor, mTickColor);
+            }
+        });
+        // Sets selectorColor
+        selectorColor.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                initColorPicker(Component.SELECTOR_COLOR, mSelectorColor, mSelectorColor);
+            }
+        });
 
     }
 
     /**
      * Sets the changed color using the ColorPickerDialog.
-     * 
+     *
      * @param component Component specifying which input is being used
-     * @param newColor Integer specifying the new color to be selected.
+     * @param newColor  Integer specifying the new color to be selected.
      */
     @Override
     public void colorChanged(Component component, int newColor) {
 
         String hexColor = String.format("#%06X", (0xFFFFFF & newColor));
 
-        switch (component)
-        {
+        switch (component) {
             case BAR_COLOR:
                 mBarColor = newColor;
                 rangebar.setBarColor(newColor);
@@ -340,23 +366,32 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
             case CONNECTING_LINE_COLOR:
                 mConnectingLineColor = newColor;
                 rangebar.setConnectingLineColor(newColor);
-                final TextView connectingLineColorText = (TextView) findViewById(R.id.connectingLineColor);
+                final TextView connectingLineColorText = (TextView) findViewById(
+                        R.id.connectingLineColor);
                 connectingLineColorText.setText("connectingLineColor = " + hexColor);
                 connectingLineColorText.setTextColor(newColor);
                 break;
 
             case PIN_COLOR:
                 mPinColor = newColor;
+                rangebar.setPinColor(newColor);
                 final TextView pinColorText = (TextView) findViewById(R.id.pinColor);
-
-                if (newColor == -1) {
-                    pinColorText.setText("pinColor = N/A");
-                    pinColorText.setTextColor(INDIGO_500);
-                }
-                else {
                     pinColorText.setText("pinColor = " + hexColor);
                     pinColorText.setTextColor(newColor);
-                }
+                break;
+            case TICK_COLOR:
+                mTickColor = newColor;
+                rangebar.setTickColor(newColor);
+                final TextView tickColorText = (TextView) findViewById(R.id.tickColor);
+                tickColorText.setText("tickColor = " + hexColor);
+                tickColorText.setTextColor(newColor);
+                break;
+            case SELECTOR_COLOR:
+                mSelectorColor = newColor;
+                rangebar.setSelectorColor(newColor);
+                final TextView selectorColorText = (TextView) findViewById(R.id.selectorColor);
+                selectorColorText.setText("selectorColor = " + hexColor);
+                selectorColorText.setTextColor(newColor);
                 break;
         }
     }
@@ -373,8 +408,9 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
             v = group.getChildAt(i);
             if (v instanceof TextView || v instanceof EditText || v instanceof Button) {
                 ((TextView) v).setTypeface(font);
-            } else if (v instanceof ViewGroup)
+            } else if (v instanceof ViewGroup) {
                 setFont((ViewGroup) v, font);
+            }
         }
     }
 
@@ -387,18 +423,17 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
 
     /**
      * Initiates the colorPicker from within a button function.
-     * 
-     * @param component Component specifying which input is being used
+     *
+     * @param component    Component specifying which input is being used
      * @param initialColor Integer specifying the initial color choice. *
      * @param defaultColor Integer specifying the default color choice.
      */
-    private void initColorPicker(Component component, int initialColor, int defaultColor)
-    {
+    private void initColorPicker(Component component, int initialColor, int defaultColor) {
         ColorPickerDialog colorPicker = new ColorPickerDialog(this,
-                                                              this,
-                                                              component,
-                                                              initialColor,
-                                                              defaultColor);
+                this,
+                component,
+                initialColor,
+                defaultColor);
         colorPicker.show();
 
     }

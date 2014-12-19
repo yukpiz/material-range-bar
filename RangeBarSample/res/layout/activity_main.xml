@@ -33,21 +33,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"/>
 
-        <com.appyvet.rangebar.SeekBar
-                xmlns:custom="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/seekBar"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                custom:tickStart="3"
-                custom:tickInterval="1"
-                custom:connectingLineWeight="3dp"
-                custom:barWeight="2dp"
-                custom:tickHeight="1.5dp"
-                custom:tickColor="@android:color/black"
-                custom:tickEnd="10"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"/>
-
         <include
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -155,6 +140,20 @@
                 ♥
 
                 <TextView
+                        android:id="@+id/enableRange"
+                        android:layout_gravity="center"
+                        android:text="Toggle range bar"
+                        android:textColor="@android:color/secondary_text_light"
+                        android:layout_height="48dp"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textAllCaps="true"/>
+
+                <TextView
                         android:id="@+id/tickStart"
                         style="@style/RoboTheme"
                         android:text="@string/tickStart"/>
@@ -221,8 +220,8 @@
                         android:id="@+id/thumbRadiusSeek"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:max="30"
-                        android:progress="0"/>
+                        android:max="100"
+                        android:progress="30"/>
 
                 <Button
                         android:id="@+id/barColor"
@@ -244,6 +243,18 @@
                         android:layout_width="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/thumbColorNormal"/>
+                <Button
+                        android:id="@+id/tickColor"
+                        style="@style/RoboTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/tickColorNormal"/>
+                <Button
+                        android:id="@+id/selectorColor"
+                        style="@style/RoboTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/selectorColorNormal"/>
             </LinearLayout>
         </LinearLayout>
 
