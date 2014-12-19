@@ -22,7 +22,7 @@ Finally, the following property can be set programmatically, but not via XML:
 
 Supported on API Level 12 and above for animations.
 
-![ScreenShot](http://i.imgur.com/q85GhRjl.png)
+![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
 
 TODO
 =======
