@@ -8,6 +8,8 @@
         <attr name="tickColor" format="color"/>
         <attr name="barWeight" format="dimension" />
         <attr name="barColor" format="reference|color" />
+        <attr name="selectorSize" format="dimension" />
+        <attr name="selectorColor" format="reference|color" />
         <attr name="connectingLineWeight" format="dimension" />
         <attr name="connectingLineColor" format="reference|color" />
         <attr name="thumbRadius" format="dimension" />

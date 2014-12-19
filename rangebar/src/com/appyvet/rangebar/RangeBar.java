@@ -50,11 +50,11 @@ import java.util.HashMap;
  * https://github.com/edmodo/range-bar.git
  * <p>
  * Clients of the RangeBar can attach a
- * {@link com.appyvet.rangebar.SeekBar.OnRangeBarChangeListener} to be notified when the thumbs
+ * {@link com.appyvet.rangebar.RangeBar.OnRangeBarChangeListener} to be notified when the thumbs
  * have
  * been moved.
  */
-public class SeekBar extends View {
+public class RangeBar extends View {
 
     // Member Variables ////////////////////////////////////////////////////////
 
@@ -73,9 +73,9 @@ public class SeekBar extends View {
 
     private static final int DEFAULT_BAR_COLOR = Color.LTGRAY;
 
-    private static final int DEFAULT_TICK_COLOR = Color.WHITE;
-
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
+
+    private static final int DEFAULT_TICK_COLOR = Color.WHITE;
 
     // Corresponds to material indigo 500.
     private static final int DEFAULT_PIN_COLOR = 0xff3f51b5;
@@ -120,6 +120,7 @@ public class SeekBar extends View {
     private int mCircleColor = DEFAULT_CONNECTING_LINE_COLOR;
 
     private float mCircleSize = DEFAULT_CIRCLE_SIZE_DP;
+
     // setTickCount only resets indices before a thumb has been pressed or a
     // setThumbIndices() is called, to correspond with intended usage
     private boolean mFirstSetTickCount = true;
@@ -130,7 +131,9 @@ public class SeekBar extends View {
 
     private int mTickCount = (int) ((mTickEnd - mTickStart) / mTickInterval) + 1;
 
-    private ThumbView mThumb;
+    private ThumbView mLeftThumb;
+
+    private ThumbView mRightThumb;
 
     private Bar mBar;
 
@@ -144,19 +147,20 @@ public class SeekBar extends View {
 
     private int mRightIndex;
 
+    private boolean mIsRangeBar = false;
 
     // Constructors ////////////////////////////////////////////////////////////
 
-    public SeekBar(Context context) {
+    public RangeBar(Context context) {
         super(context);
     }
 
-    public SeekBar(Context context, AttributeSet attrs) {
+    public RangeBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         rangeBarInit(context, attrs);
     }
 
-    public SeekBar(Context context, AttributeSet attrs, int defStyle) {
+    public RangeBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         rangeBarInit(context, attrs);
     }
@@ -179,9 +183,6 @@ public class SeekBar extends View {
         bundle.putFloat("TICK_HEIGHT_DP", mTickHeightDP);
         bundle.putFloat("BAR_WEIGHT", mBarWeight);
         bundle.putInt("BAR_COLOR", mBarColor);
-
-        bundle.putFloat("CIRCLE_SIZE", mCircleSize);
-        bundle.putInt("CIRCL_COLOR", mCircleColor);
         bundle.putFloat("CONNECTING_LINE_WEIGHT", mConnectingLineWeight);
         bundle.putInt("CONNECTING_LINE_COLOR", mConnectingLineColor);
 
@@ -210,8 +211,6 @@ public class SeekBar extends View {
             mTickHeightDP = bundle.getFloat("TICK_HEIGHT_DP");
             mBarWeight = bundle.getFloat("BAR_WEIGHT");
             mBarColor = bundle.getInt("BAR_COLOR");
-            mCircleSize = bundle.getFloat("CIRCLE_SIZE");
-            mCircleColor = bundle.getInt("CIRCL_COLOR");
             mConnectingLineWeight = bundle.getFloat("CONNECTING_LINE_WEIGHT");
             mConnectingLineColor = bundle.getInt("CONNECTING_LINE_COLOR");
 
@@ -274,26 +273,38 @@ public class SeekBar extends View {
 
         // Create the two thumb objects.
         final float yPos = h / 1.5f;
-        mThumb = new ThumbView(ctx);
-        mThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+        if (mIsRangeBar) {
+            mLeftThumb = new ThumbView(ctx);
+            mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+        }
+        mRightThumb = new ThumbView(ctx);
+        mRightThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+
         // Create the underlying bar.
         final float marginLeft = mExpandedPinRadius;
+        ;
         final float barLength = w - 2 * marginLeft;
         mBar = new Bar(ctx, marginLeft, yPos, barLength, mTickCount, mTickHeightDP, mTickColor,
                 mBarWeight, mBarColor);
 
         // Initialize thumbs to the desired indices
-        mThumb.setX(getMarginLeft() + (mRightIndex / (float) (mTickCount - 1)) * barLength);
-        mThumb.setXValue(getThumbValue(mThumb, mRightIndex));
+        if (mIsRangeBar) {
+            mLeftThumb.setX(marginLeft + (mLeftIndex / (float) (mTickCount - 1)) * barLength);
+            mLeftThumb.setXValue(getThumbValue(mLeftIndex));
+        }
+        mRightThumb.setX(marginLeft + (mRightIndex / (float) (mTickCount - 1)) * barLength);
+        mRightThumb.setXValue(getThumbValue(mRightIndex));
 
         // Set the thumb indices.
-        final int newRightIndex = mBar.getNearestTickIndex(mThumb);
+        final int newLeftIndex = mIsRangeBar ? mBar.getNearestTickIndex(mLeftThumb) : 0;
+        final int newRightIndex = mBar.getNearestTickIndex(mRightThumb);
 
         // Call the listener.
-        if (newRightIndex != mRightIndex) {
+        if (newLeftIndex != mLeftIndex || newRightIndex != mRightIndex) {
             if (mListener != null) {
-                mListener.onIndexChangeListener(this, mLeftIndex,
-                        getThumbValue(mThumb, mRightIndex));
+                mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                        getThumbValue(mLeftIndex),
+                        getThumbValue( mRightIndex));
             }
         }
 
@@ -306,10 +317,17 @@ public class SeekBar extends View {
     protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
+
         mBar.draw(canvas);
-        mConnectingLine.draw(canvas, getMarginLeft(), mThumb);
-        mBar.drawTicks(canvas);
-        mThumb.draw(canvas);
+        if (mIsRangeBar) {
+            mConnectingLine.draw(canvas, mLeftThumb, mRightThumb);
+            mBar.drawTicks(canvas);
+            mLeftThumb.draw(canvas);
+        } else {
+            mConnectingLine.draw(canvas, getMarginLeft(), mRightThumb);
+            mBar.drawTicks(canvas);
+        }
+        mRightThumb.draw(canvas);
 
     }
 
@@ -374,8 +392,9 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex),
+                            getThumbValue(mRightIndex));
                 }
             }
             if (indexOutOfRange(mLeftIndex, mRightIndex)) {
@@ -383,8 +402,9 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex),
+                            getThumbValue(mRightIndex));
                 }
             }
 
@@ -414,8 +434,8 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex), getThumbValue(mRightIndex));
                 }
             }
             if (indexOutOfRange(mLeftIndex, mRightIndex)) {
@@ -423,8 +443,8 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue( mLeftIndex), getThumbValue(mRightIndex));
                 }
             }
 
@@ -454,8 +474,8 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex), getThumbValue(mRightIndex));
                 }
             }
             if (indexOutOfRange(mLeftIndex, mRightIndex)) {
@@ -463,8 +483,8 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex), getThumbValue(mRightIndex));
                 }
             }
 
@@ -582,8 +602,8 @@ public class SeekBar extends View {
             createThumbs();
 
             if (mListener != null) {
-                mListener.onIndexChangeListener(this, mRightIndex,
-                        getThumbValue(mThumb, mRightIndex));
+                mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                        getThumbValue(mLeftIndex), getThumbValue(mRightIndex));
             }
         }
 
@@ -609,8 +629,8 @@ public class SeekBar extends View {
             createThumbs();
 
             if (mListener != null) {
-                mListener.onIndexChangeListener(this, mRightIndex,
-                        getThumbValue(mThumb, mRightIndex));
+                mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                        getThumbValue(mLeftIndex), getThumbValue(mRightIndex));
             }
         }
 
@@ -685,8 +705,9 @@ public class SeekBar extends View {
                 mRightIndex = mTickCount - 1;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex),
+                            getThumbValue(mRightIndex));
                 }
 
             } else {
@@ -698,10 +719,12 @@ public class SeekBar extends View {
                     .getDimension(R.styleable.RangeBar_tickHeight, DEFAULT_TICK_HEIGHT_DP);
             mBarWeight = ta.getDimension(R.styleable.RangeBar_barWeight, DEFAULT_BAR_WEIGHT_PX);
             mBarColor = ta.getColor(R.styleable.RangeBar_barColor, DEFAULT_BAR_COLOR);
-            mCircleSize = ta.getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP);
+            mCircleSize = ta
+                    .getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP);
             mCircleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     mCircleSize, getResources().getDisplayMetrics());
-            mCircleColor = ta.getColor(R.styleable.RangeBar_selectorColor, DEFAULT_CONNECTING_LINE_COLOR);
+            mCircleColor = ta.getColor(R.styleable.RangeBar_selectorColor,
+                    DEFAULT_CONNECTING_LINE_COLOR);
             mTickColor = ta.getColor(R.styleable.RangeBar_tickColor, DEFAULT_TICK_COLOR);
             mConnectingLineWeight = ta.getDimension(R.styleable.RangeBar_connectingLineWeight,
                     DEFAULT_CONNECTING_LINE_WEIGHT_PX);
@@ -711,6 +734,7 @@ public class SeekBar extends View {
                     .getDimension(R.styleable.RangeBar_thumbRadius, DEFAULT_THUMB_RADIUS_DP);
             mExpandedPinRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     mExpandedPinRadius, getResources().getDisplayMetrics());
+
         } finally {
 
             ta.recycle();
@@ -722,7 +746,6 @@ public class SeekBar extends View {
      * Creates a new mBar
      */
     private void createBar() {
-
         mBar = new Bar(getContext(),
                 getMarginLeft(),
                 getYPos(),
@@ -748,25 +771,39 @@ public class SeekBar extends View {
     }
 
     /**
-     * Creates new Thumb.
+     * Creates two new Thumbs.
      */
     private void createThumbs() {
 
         Context ctx = getContext();
         float yPos = getYPos();
 
-        mThumb = new ThumbView(ctx);
-        mThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+        if (mIsRangeBar) {
+            mLeftThumb = new ThumbView(ctx);
+            mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+        }
+        mRightThumb = new ThumbView(ctx);
+        mRightThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
 
+        float marginLeft = getMarginLeft();
         float barLength = getBarLength();
 
         // Initialize thumbs to the desired indices
-        mThumb.setX(getMarginLeft() * 2 + (mRightIndex / (float) (mTickCount - 1)) * barLength);
-        mThumb.setXValue(getThumbValue(mThumb, mRightIndex));
+        if (mIsRangeBar) {
+            mLeftThumb.setX(marginLeft + (mLeftIndex / (float) (mTickCount - 1)) * barLength);
+            mLeftThumb.setXValue(getThumbValue(mLeftIndex));
+        }
+        mRightThumb.setX(marginLeft + (mRightIndex / (float) (mTickCount - 1)) * barLength);
+        mRightThumb.setXValue(getThumbValue(mRightIndex));
 
         invalidate();
     }
 
+    /**
+     * Get marginLeft in each of the public attribute methods.
+     *
+     * @return float marginLeft
+     */
     private float getMarginLeft() {
         return mExpandedPinRadius;
     }
@@ -786,7 +823,7 @@ public class SeekBar extends View {
      * @return float barLength
      */
     private float getBarLength() {
-        return getWidth() - (2 * getMarginLeft());
+        return (getWidth() - 2 * getMarginLeft());
     }
 
     /**
@@ -831,9 +868,19 @@ public class SeekBar extends View {
      * @param y the y-coordinate of the down action
      */
     private void onActionDown(float x, float y) {
+        if (mIsRangeBar) {
+            if (!mRightThumb.isPressed() && mLeftThumb.isInTargetZone(x, y)) {
 
-        if (mThumb.isInTargetZone(x, y)) {
-            pressThumb(mThumb);
+                pressThumb(mLeftThumb);
+
+            } else if (!mLeftThumb.isPressed() && mRightThumb.isInTargetZone(x, y)) {
+
+                pressThumb(mRightThumb);
+            }
+        } else {
+            if (mRightThumb.isInTargetZone(x, y)) {
+                pressThumb(mRightThumb);
+            }
         }
     }
 
@@ -845,28 +892,43 @@ public class SeekBar extends View {
      * @param y the y-coordinate of the up action
      */
     private void onActionUp(float x, float y) {
-        if (mThumb.isPressed()) {
 
-            releaseThumb(mThumb);
+        if (mIsRangeBar && mLeftThumb.isPressed()) {
+
+            releaseThumb(mLeftThumb);
+
+        } else if (mRightThumb.isPressed()) {
+
+            releaseThumb(mRightThumb);
 
         } else {
 
-            float rightThumbXDistance = Math.abs(mThumb.getX() - x);
+            float leftThumbXDistance = mIsRangeBar ?  Math.abs(mLeftThumb.getX() - x) : 0;
+            float rightThumbXDistance = Math.abs(mRightThumb.getX() - x);
 
             // Get the updated nearest tick marks for each thumb.
-            final int newRightIndex = mBar.getNearestTickIndex(mThumb);
-            if (0 < rightThumbXDistance) {
-                mThumb.setX(x);
-                releaseThumb(mThumb);
+            final int newLeftIndex = mIsRangeBar ? mBar.getNearestTickIndex(mLeftThumb) : 0;
+            final int newRightIndex = mBar.getNearestTickIndex(mRightThumb);
+            if (leftThumbXDistance < rightThumbXDistance) {
+                if(mIsRangeBar) {
+                    mLeftThumb.setX(x);
+                    releaseThumb(mLeftThumb);
+                }
+            } else {
+                mRightThumb.setX(x);
+                releaseThumb(mRightThumb);
             }
 
             // If either of the indices have changed, update and call the listener.
-            if (newRightIndex != mRightIndex) {
+            if (newLeftIndex != mLeftIndex || newRightIndex != mRightIndex) {
+
+                mLeftIndex = newLeftIndex;
                 mRightIndex = newRightIndex;
 
                 if (mListener != null) {
-                    mListener.onIndexChangeListener(this, mRightIndex,
-                            getThumbValue(mThumb, mRightIndex));
+                    mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                            getThumbValue(mLeftIndex),
+                            getThumbValue(mRightIndex));
                 }
             }
         }
@@ -880,22 +942,37 @@ public class SeekBar extends View {
     private void onActionMove(float x) {
 
         // Move the pressed thumb to the new x-position.
-        if (mThumb.isPressed()) {
-            moveThumb(mThumb, x);
+        if (mIsRangeBar && mLeftThumb.isPressed()) {
+            moveThumb(mLeftThumb, x);
+        } else if (mRightThumb.isPressed()) {
+            moveThumb(mRightThumb, x);
+        }
+
+        // If the thumbs have switched order, fix the references.
+        if (mIsRangeBar && mLeftThumb.getX() > mRightThumb.getX()) {
+            final ThumbView temp = mLeftThumb;
+            mLeftThumb = mRightThumb;
+            mRightThumb = temp;
         }
 
         // Get the updated nearest tick marks for each thumb.
-        final int newRightIndex = mBar.getNearestTickIndex(mThumb);
+        final int newLeftIndex = mIsRangeBar ? mBar.getNearestTickIndex(mLeftThumb) : 0;
+        final int newRightIndex = mBar.getNearestTickIndex(mRightThumb);
 
         // If either of the indices have changed, update and call the listener.
-        if (newRightIndex != mRightIndex) {
+        if (newLeftIndex != mLeftIndex || newRightIndex != mRightIndex) {
 
+            mLeftIndex = newLeftIndex;
             mRightIndex = newRightIndex;
-            mThumb.setXValue(getThumbValue(mThumb, mRightIndex));
+            if(mIsRangeBar) {
+                mLeftThumb.setXValue(getThumbValue(mLeftIndex));
+            }
+            mRightThumb.setXValue(getThumbValue(mRightIndex));
 
             if (mListener != null) {
-                mListener.onIndexChangeListener(this, mRightIndex,
-                        getThumbValue(mThumb, mRightIndex));
+                mListener.onRangeChangeListener(this, mLeftIndex, mRightIndex,
+                        getThumbValue(mLeftIndex),
+                        getThumbValue(mRightIndex));
             }
         }
     }
@@ -906,7 +983,7 @@ public class SeekBar extends View {
      *
      * @param thumb the thumb to press
      */
-    private void pressThumb(ThumbView thumb) {
+    private void pressThumb(final ThumbView thumb) {
         if (mFirstSetTickCount) {
             mFirstSetTickCount = false;
         }
@@ -916,7 +993,7 @@ public class SeekBar extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mThumbRadiusDP = (Float) (animation.getAnimatedValue());
-                mThumb.setSize(mThumbRadiusDP, 30 * animation.getAnimatedFraction());
+                thumb.setSize(mThumbRadiusDP, 30 * animation.getAnimatedFraction());
                 invalidate();
             }
         });
@@ -930,12 +1007,12 @@ public class SeekBar extends View {
      *
      * @param thumb the thumb to release
      */
-    private void releaseThumb(ThumbView thumb) {
+    private void releaseThumb(final ThumbView thumb) {
 
         final float nearestTickX = mBar.getNearestTickCoordinate(thumb);
         thumb.setX(nearestTickX);
         int tickIndex = mBar.getNearestTickIndex(thumb);
-        thumb.setXValue(getThumbValue(thumb, tickIndex));
+        thumb.setXValue(getThumbValue(tickIndex));
         ValueAnimator animator = ValueAnimator.ofFloat(mThumbRadiusDP, 0);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -943,7 +1020,7 @@ public class SeekBar extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 mThumbRadiusDP = (Float) (animation.getAnimatedValue());
-                mThumb.setSize(mThumbRadiusDP, 30 - (30 * animation.getAnimatedFraction()));
+                thumb.setSize(mThumbRadiusDP, 30 - (30 * animation.getAnimatedFraction()));
                 invalidate();
             }
         });
@@ -955,10 +1032,9 @@ public class SeekBar extends View {
      * Set the value on the thumb pin, either from map or calculated from the tick intervals
      * Integer check to format decimals as whole numbers
      *
-     * @param thumb     the thumb to release
      * @param tickIndex the index to set the value for
      */
-    private String getThumbValue(ThumbView thumb, int tickIndex) {
+    private String getThumbValue(int tickIndex) {
         float tickValue = (tickIndex * mTickInterval) + mTickStart;
         String xValue = mTickMap.get(tickValue);
         if (xValue == null) {
@@ -998,7 +1074,9 @@ public class SeekBar extends View {
      */
     public static interface OnRangeBarChangeListener {
 
-        public void onIndexChangeListener(SeekBar rangeBar,
-                int rightThumbIndex, String rightThumbValue);
+        public void onRangeChangeListener(RangeBar rangeBar, int leftThumbIndex,
+                int rightThumbIndex, String leftThumbValue, String rightThumbValue);
+
+        public void onSeekChangeListener(RangeBar rangeBar, int thumbIndex, String thumbValue);
     }
 }

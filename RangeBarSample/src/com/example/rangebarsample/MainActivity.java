@@ -104,11 +104,16 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         // Sets the display values of the indices
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
-            public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex,
+            public void onRangeChangeListener(RangeBar rangeBar, int leftThumbIndex,
                     int rightThumbIndex,
                     String leftThumbValue, String rightThumbValue) {
                 leftIndexValue.setText("" + leftThumbIndex);
                 rightIndexValue.setText("" + rightThumbIndex);
+            }
+
+            @Override
+            public void onSeekChangeListener(RangeBar rangeBar, int thumbIndex, String thumbValue) {
+
             }
         });
 
