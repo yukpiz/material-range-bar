@@ -26,7 +26,13 @@ Supported on API Level 12 and above for animations.
 
 TODO
 =======
+- Better instructions!
 - Properly implement Map of strings to each value
+
+Demo
+=======
+[Get it from the Google Play Store](https://play.google.com/store/apps/details?id=com.appyvet.rangebarsample)
+
 
 Installation
 =======
