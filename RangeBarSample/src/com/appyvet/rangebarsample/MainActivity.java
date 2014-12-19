@@ -1,5 +1,5 @@
 
-package com.example.rangebarsample;
+package com.appyvet.rangebarsample;
 
 import com.appyvet.rangebar.RangeBar;
 

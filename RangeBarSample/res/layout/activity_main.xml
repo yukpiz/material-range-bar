@@ -1,42 +1,43 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+        android:id="@+id/mylayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="center"
+            android:text="@string/title"
+            android:textSize="40sp"
+            android:background="@color/indigo500"
+            android:textColor="@color/white"/>
+
+    <com.appyvet.rangebar.RangeBar
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rangebar1"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            custom:tickStart="5"
+            custom:tickInterval="1"
+            custom:tickEnd="10"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+    <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/divider"/>
+
+    <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:background="@android:color/white">
-
-    <LinearLayout
-            android:id="@+id/mylayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            tools:context=".MainActivity">
-
-        <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:gravity="center"
-                android:text="@string/title"
-                android:textSize="40sp"
-                android:background="@color/indigo500"
-                android:textColor="@color/white"/>
-
-        <com.appyvet.rangebar.RangeBar
-                xmlns:custom="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/rangebar1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                custom:tickStart="5"
-                custom:tickInterval="1"
-                custom:tickEnd="10"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"/>
-
-        <include
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                layout="@layout/divider"/>
 
         <LinearLayout
                 android:orientation="vertical"
@@ -243,12 +244,14 @@
                         android:layout_width="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/thumbColorNormal"/>
+
                 <Button
                         android:id="@+id/tickColor"
                         style="@style/RoboTheme"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/tickColorNormal"/>
+
                 <Button
                         android:id="@+id/selectorColor"
                         style="@style/RoboTheme"
@@ -258,6 +261,5 @@
             </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
