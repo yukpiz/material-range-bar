@@ -43,33 +43,6 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         bundle.putInt("CONNECTING_LINE_COLOR", mConnectingLineColor);
     }
 
-    // Restores the state upon rotating the screen/restarting the activity
-    @Override
-    protected void onRestoreInstanceState(Bundle bundle) {
-        super.onRestoreInstanceState(bundle);
-        mBarColor = bundle.getInt("BAR_COLOR");
-        mConnectingLineColor = bundle.getInt("CONNECTING_LINE_COLOR");
-
-        // Change the text colors to the appropriate colors, and the text as
-        // well
-        colorChanged(Component.BAR_COLOR, mBarColor);
-        colorChanged(Component.CONNECTING_LINE_COLOR, mConnectingLineColor);
-
-        // Gets the RangeBar
-        rangebar = (RangeBar) findViewById(R.id.rangebar1);
-
-        // Gets the index value TextViews
-        final TextView leftIndexValue = (TextView) findViewById(R.id.leftIndexValue);
-        final TextView rightIndexValue = (TextView) findViewById(R.id.rightIndexValue);
-        // Resets the index values every time the activity is changed
-        leftIndexValue.setText("" + rangebar.getLeftIndex());
-        rightIndexValue.setText("" + rangebar.getRightIndex());
-
-        // Sets focus to the main layout, not the index text fields
-        findViewById(R.id.mylayout).requestFocus();
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,10 +98,6 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
                 rightIndexValue.setText("" + rightThumbIndex);
             }
 
-            @Override
-            public void onSeekChangeListener(RangeBar rangeBar, int thumbIndex, String thumbValue) {
-
-            }
         });
 
         // Sets the indices themselves upon input from the user

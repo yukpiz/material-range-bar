@@ -231,7 +231,6 @@ public class RangeBar extends View {
             super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
 
         } else {
-
             super.onRestoreInstanceState(state);
         }
     }
@@ -290,7 +289,7 @@ public class RangeBar extends View {
         // Create the underlying bar.
         final float marginLeft = mExpandedPinRadius;
         ;
-        final float barLength = w - 2 * marginLeft;
+        final float barLength = w - (2 * marginLeft);
         mBar = new Bar(ctx, marginLeft, yPos, barLength, mTickCount, mTickHeightDP, mTickColor,
                 mBarWeight, mBarColor);
 
@@ -1117,7 +1116,5 @@ public class RangeBar extends View {
 
         public void onRangeChangeListener(RangeBar rangeBar, int leftThumbIndex,
                 int rightThumbIndex, String leftThumbValue, String rightThumbValue);
-
-        public void onSeekChangeListener(RangeBar rangeBar, int thumbIndex, String thumbValue);
     }
 }
