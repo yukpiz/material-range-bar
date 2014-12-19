@@ -1,12 +1,12 @@
 MaterialRangeBar
 =======
-MaterialRangeBar is a fork of https://github.com/edmodo/range-bar that adds some basic material styling, as well as start and end values, values as floats and some other things. It is similar to an enhanced SeekBar widget, though it doesn't make use of the SeekBar. It provides for the selection of a range of values rather than a single value. The selectable range values are discrete values designated by tick marks; the pin (handle) will snap to the nearest tick mark. There is also a version just as a seek bar, with a single pin.
+MaterialRangeBar is a fork of https://github.com/edmodo/range-bar that adds some basic material styling, as well as start and end values, values as floats and some other things. It is similar to an enhanced SeekBar widget, though it doesn't make use of the SeekBar. It provides for the selection of a range of values as well as for a single value. The selectable range values are discrete values designated by tick marks; the pin (handle) will snap to the nearest tick mark. This is my first library project, apologies for poor coding, etc etc.
 
 Developers can customize the following attributes (both via XML and programmatically):
 
 - bar color
 - bar thickness
-- tick height
+- tick size
 - tick color
 - tick start value
 - tick end value
@@ -15,14 +15,18 @@ Developers can customize the following attributes (both via XML and programmatic
 - connecting line color
 - pin size
 - pin color
+- Bar type (Range or seek)
 
 Finally, the following property can be set programmatically, but not via XML:
 - pin indices (the location of the thumbs on the RangeBar)
-- Map of strings to each value
 
-Supported on API Level 7 and above.
+Supported on API Level 12 and above for animations.
 
 ![ScreenShot](http://i.imgur.com/q85GhRjl.png)
+
+TODO
+=======
+- Properly implement Map of strings to each value
 
 Installation
 =======
@@ -34,7 +38,7 @@ Installation
     }
 
 	dependencies {
-    compile 'com.appyvet:rangebar:1.0.0'
+    compile 'com.appyvet:rangebar:0.0.1'
 	}
 
 License
