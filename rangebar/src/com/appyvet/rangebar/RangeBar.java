@@ -865,7 +865,7 @@ public class RangeBar extends View {
      * @return float yPos
      */
     private float getYPos() {
-        return (getHeight() / 1.5f);
+        return (getHeight() / 1.25f);
     }
 
     /**
