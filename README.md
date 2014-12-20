@@ -60,7 +60,7 @@ Installation
     }
 
 	dependencies {
-    compile 'com.appyvet:rangebar:0.0.1'
+    compile 'com.appyvet:rangebar:0.0.2'
 	}
 
 License
