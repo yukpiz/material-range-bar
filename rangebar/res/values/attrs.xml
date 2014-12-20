@@ -10,6 +10,7 @@
         <attr name="barColor" format="reference|color" />
         <attr name="selectorSize" format="dimension" />
         <attr name="pinPadding" format="dimension" />
+        <attr name="barPaddingBottom" format="dimension" />
         <attr name="selectorColor" format="reference|color" />
         <attr name="rangeBar" format="boolean" />
         <attr name="connectingLineWeight" format="dimension" />

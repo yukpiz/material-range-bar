@@ -29,7 +29,7 @@ import android.view.View;
  * Represents a thumb in the RangeBar slider. This is the handle for the slider
  * that is pressed and slid.
  */
-class ThumbView extends View {
+class PinView extends View {
 
     // Private Constants ///////////////////////////////////////////////////////
 
@@ -130,7 +130,7 @@ class ThumbView extends View {
         mY = y;
     }
 
-    public ThumbView(Context context) {
+    public PinView(Context context) {
         super(context);
     }
 

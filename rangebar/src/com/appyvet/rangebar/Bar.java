@@ -108,7 +108,7 @@ class Bar {
      * @param thumb the thumb to find the nearest tick for
      * @return the x-coordinate of the nearest tick
      */
-    float getNearestTickCoordinate(ThumbView thumb) {
+    float getNearestTickCoordinate(PinView thumb) {
 
         final int nearestTickIndex = getNearestTickIndex(thumb);
 
@@ -123,7 +123,7 @@ class Bar {
      * @param thumb the Thumb to find the nearest tick for
      * @return the zero-based index of the nearest tick
      */
-    int getNearestTickIndex(ThumbView thumb) {
+    int getNearestTickIndex(PinView thumb) {
 
         final int nearestTickIndex = (int) ((thumb.getX() - mLeftX + mTickDistance / 2f) / mTickDistance);
 

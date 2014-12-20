@@ -60,7 +60,7 @@ class ConnectingLine {
      * @param leftThumb the left thumb
      * @param rightThumb the right thumb
      */
-    void draw(Canvas canvas, ThumbView leftThumb, ThumbView rightThumb) {
+    void draw(Canvas canvas, PinView leftThumb, PinView rightThumb) {
         canvas.drawLine(leftThumb.getX(), mY, rightThumb.getX(), mY, mPaint);
     }
     /**
@@ -69,7 +69,7 @@ class ConnectingLine {
      * @param canvas the Canvas to draw to
      * @param rightThumb the right thumb
      */
-    void draw(Canvas canvas, float leftMargin, ThumbView rightThumb) {
+    void draw(Canvas canvas, float leftMargin, PinView rightThumb) {
         canvas.drawLine(leftMargin, mY, rightThumb.getX(), mY, mPaint);
     }
 }

@@ -26,5 +26,6 @@
     <string name="rightIndex">Right</string>
     <string name="indexSet">Set By Index</string>
     <string name="valueSet">Set By Value</string>
+    <string name="toggle_range">Toggle range bar</string>
 
 </resources>

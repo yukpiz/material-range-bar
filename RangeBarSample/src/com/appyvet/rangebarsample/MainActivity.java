@@ -52,9 +52,9 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         setContentView(R.layout.activity_main);
 
         // Sets fonts for all
-        Typeface font = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
-        ViewGroup root = (ViewGroup) findViewById(R.id.mylayout);
-        setFont(root, font);
+//        Typeface font = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
+////        ViewGroup root = (ViewGroup) findViewById(R.id.mylayout);
+////        setFont(root, font);
 
         // Gets the buttons references for the buttons
         final Button barColor = (Button) findViewById(R.id.barColor);
@@ -67,10 +67,9 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         final TextView rangeButton = (TextView) findViewById(R.id.enableRange);
 
         //Sets the buttons to bold.
-        indexButton.setTypeface(font, Typeface.BOLD);
-        barColor.setTypeface(font, Typeface.BOLD);
-        connectingLineColor.setTypeface(font, Typeface.BOLD);
-        pinColor.setTypeface(font, Typeface.BOLD);
+//        barColor.setTypeface(font, Typeface.BOLD);
+//        connectingLineColor.setTypeface(font, Typeface.BOLD);
+//        pinColor.setTypeface(font, Typeface.BOLD);
 
         // Gets the RangeBar
         rangebar = (RangeBar) findViewById(R.id.rangebar1);
@@ -91,11 +90,11 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         // Sets the display values of the indices
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
-            public void onRangeChangeListener(RangeBar rangeBar, int leftThumbIndex,
-                    int rightThumbIndex,
-                    String leftThumbValue, String rightThumbValue) {
-                leftIndexValue.setText("" + leftThumbIndex);
-                rightIndexValue.setText("" + rightThumbIndex);
+            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
+                    int rightPinIndex,
+                    String leftPinValue, String rightPinValue) {
+                leftIndexValue.setText("" + leftPinIndex);
+                rightIndexValue.setText("" + rightPinIndex);
             }
 
         });
@@ -114,7 +113,7 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
                     if (!leftIndex.isEmpty() && !rightIndex.isEmpty()) {
                         int leftIntIndex = Integer.parseInt(leftIndex);
                         int rightIntIndex = Integer.parseInt(rightIndex);
-                        rangebar.setThumbIndices(leftIntIndex, rightIntIndex);
+                        rangebar.setRangePinsByIndices(leftIntIndex, rightIntIndex);
                     }
                 } catch (IllegalArgumentException e) {
                 }
@@ -135,7 +134,7 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
                     if (!leftValue.isEmpty() && !rightValue.isEmpty()) {
                         float leftIntIndex = Float.parseFloat(leftValue);
                         float rightIntIndex = Float.parseFloat(rightValue);
-                        rangebar.setThumbValues(leftIntIndex, rightIntIndex);
+                        rangebar.setRangePinsByValue(leftIntIndex, rightIntIndex);
                     }
                 } catch (IllegalArgumentException e) {
                 }
@@ -257,10 +256,10 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
             @Override
             public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser) {
                 if (progress == 0) {
-                    rangebar.setThumbRadius(-1);
+                    rangebar.setPinRadius(-1);
                     thumbRadius.setText("Pin Radius = 30");
                 } else {
-                    rangebar.setThumbRadius(progress);
+                    rangebar.setPinRadius(progress);
                     thumbRadius.setText("Pin Radius = " + progress);
                 }
             }
