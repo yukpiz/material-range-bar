@@ -848,7 +848,7 @@ public class RangeBar extends View {
         }
         else{
             mBarColor = mActiveBarColor;
-            mConnectingLineColor = mActiveBarColor;
+            mConnectingLineColor = mActiveConnectingLineColor;
             mCircleColor = mActiveCircleColor;
             mTickColor = mActiveTickColor;
         }
