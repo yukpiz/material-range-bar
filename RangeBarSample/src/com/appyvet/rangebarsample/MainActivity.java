@@ -65,6 +65,7 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
         final TextView indexButton = (TextView) findViewById(R.id.setIndex);
         final TextView valueButton = (TextView) findViewById(R.id.setValue);
         final TextView rangeButton = (TextView) findViewById(R.id.enableRange);
+        final TextView disabledButton = (TextView) findViewById(R.id.disable);
 
         //Sets the buttons to bold.
 //        barColor.setTypeface(font, Typeface.BOLD);
@@ -78,6 +79,12 @@ public class MainActivity extends Activity implements ColorPickerDialog.OnColorC
             @Override
             public void onClick(View v) {
                 rangebar.setRangeBarEnabled(!rangebar.isRangeBar());
+            }
+        });
+        disabledButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rangebar.setEnabled(!rangebar.isEnabled());
             }
         });
 

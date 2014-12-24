@@ -1,2 +1,2 @@
-include 'rangebar'
+include 'rangebar', ':rangebar'
 include 'RangeBarSample'

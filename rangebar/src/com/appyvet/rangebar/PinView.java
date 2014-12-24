@@ -21,7 +21,6 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -160,7 +159,6 @@ class PinView extends View {
     }
 
     void setSize(float size, float padding) {
-        Log.d("padding", "set padding = " + padding);
         mPinPadding = (int) padding;
         mThumbRadiusPx = (int) size;
         invalidate();

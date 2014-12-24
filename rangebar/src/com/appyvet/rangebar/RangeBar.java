@@ -157,6 +157,14 @@ public class RangeBar extends View {
 
     private float mBarPaddingBottom = DEFAULT_BAR_PADDING_BOTTOM_DP;
 
+    private int mActiveConnectingLineColor;
+
+    private int mActiveBarColor;
+
+    private int mActiveTickColor;
+
+    private int mActiveCircleColor;
+
     // Constructors ////////////////////////////////////////////////////////////
 
     public RangeBar(Context context) {
@@ -300,7 +308,7 @@ public class RangeBar extends View {
 
         // Create the underlying bar.
         final float marginLeft = mExpandedPinRadius;
-        ;
+
         final float barLength = w - (2 * marginLeft);
         mBar = new Bar(ctx, marginLeft, yPos, barLength, mTickCount, mTickHeightDP, mTickColor,
                 mBarWeight, mBarColor);
@@ -623,21 +631,52 @@ public class RangeBar extends View {
         createPins();
     }
 
+    /**
+     * Gets the start tick.
+     *
+     * @return the start tick.
+     */
+    public float getTickStart() {
+        return mTickStart;
+    }
+
+    /**
+     * Gets the end tick.
+     *
+     * @return the end tick.
+     */
+    public float getTickEnd() {
+        return mTickEnd;
+    }
+
+    /**
+     * Gets the tick count.
+     *
+     * @return the tick count
+     */
+    public int getTickCount() {
+        return mTickCount;
+    }
 
     /**
      * Sets the location of the pins according by the supplied index.
      * Numbered from 0 to mTickCount - 1 from the left.
      *
-     * @param leftPinIndex  Integer specifying the index of the left thumb
-     * @param rightPinIndex Integer specifying the index of the right thumb
+     * @param leftPinIndex  Integer specifying the index of the left pin
+     * @param rightPinIndex Integer specifying the index of the right pin
      */
     public void setRangePinsByIndices(int leftPinIndex, int rightPinIndex) {
         if (indexOutOfRange(leftPinIndex, rightPinIndex)) {
             Log.e(TAG,
-                    "A thumb index is out of bounds. Check that it is between 0 and mTickCount - 1");
+                    "Pin index left " + leftPinIndex + ", or right "+rightPinIndex
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + mTickStart + ") and less than the maximum value ("
+                            + mTickEnd + ")");
             throw new IllegalArgumentException(
-                    "A thumb index is out of bounds. Check that it is between 0 and mTickCount - 1");
-
+                    "Pin index left " + leftPinIndex + ", or right "+rightPinIndex
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + mTickStart + ") and less than the maximum value ("
+                            + mTickEnd + ")");
         } else {
 
             if (mFirstSetTickCount) {
@@ -661,14 +700,20 @@ public class RangeBar extends View {
      * Sets the location of pin according by the supplied index.
      * Numbered from 0 to mTickCount - 1 from the left.
      *
-     * @param pinIndex Integer specifying the index of the right thumb
+     * @param pinIndex Integer specifying the index of the seek pin
      */
     public void setSeekPinByIndex(int pinIndex) {
-        if (pinIndex > mTickEnd) {
+        if (pinIndex < 0 || pinIndex > mTickCount) {
             Log.e(TAG,
-                    "A thumb index is out of bounds. Check that it is between 0 and mTickCount - 1");
+                    "Pin index " + pinIndex
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + 0 + ") and less than the maximum value ("
+                            + mTickCount + ")");
             throw new IllegalArgumentException(
-                    "A thumb index is out of bounds. Check that it is between 0 and mTickCount - 1");
+                    "Pin index " + pinIndex
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + 0 + ") and less than the maximum value ("
+                            + mTickCount + ")");
 
         } else {
 
@@ -690,16 +735,21 @@ public class RangeBar extends View {
     /**
      * Sets the location of pins according by the supplied values.
      *
-     * @param leftPinValue Float specifying the index of the right pin
+     * @param leftPinValue  Float specifying the index of the left pin
      * @param rightPinValue Float specifying the index of the right pin
      */
     public void setRangePinsByValue(float leftPinValue, float rightPinValue) {
         if (valueOutOfRange(leftPinValue, rightPinValue)) {
             Log.e(TAG,
-                    "A thumb value is out of bounds. Check that it is greater than the minimum and less than the maximum value");
+                    "Pin value left " + leftPinValue + ", or right "+rightPinValue
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + mTickStart + ") and less than the maximum value ("
+                            + mTickEnd + ")");
             throw new IllegalArgumentException(
-                    "A thumb value is out of bounds. Check that it is greater than the minimum and less than the maximum value");
-
+                            "Pin value left " + leftPinValue + ", or right "+rightPinValue
+                                    + " is out of bounds. Check that it is greater than the minimum ("
+                                    + mTickStart + ") and less than the maximum value ("
+                                    + mTickEnd + ")");
         } else {
             if (mFirstSetTickCount) {
                 mFirstSetTickCount = false;
@@ -724,11 +774,17 @@ public class RangeBar extends View {
      * @param pinValue Float specifying the value of the pin
      */
     public void setSeekPinByValue(float pinValue) {
-        if (pinValue > mTickEnd) {
+        if (pinValue > mTickEnd || pinValue < mTickStart) {
             Log.e(TAG,
-                    "A thumb value is out of bounds. Check that it is greater than the minimum and less than the maximum value");
+                    "Pin value " + pinValue
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + mTickStart + ") and less than the maximum value ("
+                            + mTickEnd + ")");
             throw new IllegalArgumentException(
-                    "A thumb value is out of bounds. Check that it is greater than the minimum and less than the maximum value");
+                    "Pin value " + pinValue
+                            + " is out of bounds. Check that it is greater than the minimum ("
+                            + mTickStart + ") and less than the maximum value ("
+                            + mTickEnd + ")");
 
         } else {
             if (mFirstSetTickCount) {
@@ -756,18 +812,18 @@ public class RangeBar extends View {
     }
 
     /**
-     * Gets the index of the left-most thumb.
+     * Gets the index of the left-most pin.
      *
-     * @return the 0-based index of the left thumb
+     * @return the 0-based index of the left pin
      */
     public int getLeftIndex() {
         return mLeftIndex;
     }
 
     /**
-     * Gets the index of the right-most thumb.
+     * Gets the index of the right-most pin.
      *
-     * @return the 0-based index of the right thumb
+     * @return the 0-based index of the right pin
      */
     public int getRightIndex() {
         return mRightIndex;
@@ -781,6 +837,28 @@ public class RangeBar extends View {
     public double getTickInterval() {
         return mTickInterval;
     }
+
+    @Override
+    public void setEnabled(boolean enabled){
+        if(!enabled) {
+            mBarColor = DEFAULT_BAR_COLOR;
+            mConnectingLineColor = DEFAULT_BAR_COLOR;
+            mCircleColor = DEFAULT_BAR_COLOR;
+            mTickColor = DEFAULT_BAR_COLOR;
+        }
+        else{
+            mBarColor = mActiveBarColor;
+            mConnectingLineColor = mActiveBarColor;
+            mCircleColor = mActiveCircleColor;
+            mTickColor = mActiveTickColor;
+        }
+
+        createBar();
+        createPins();
+        createConnectingLine();
+        super.setEnabled(enabled);
+    }
+
 
     // Private Methods /////////////////////////////////////////////////////////
 
@@ -836,16 +914,20 @@ public class RangeBar extends View {
                     .getDimension(R.styleable.RangeBar_tickHeight, DEFAULT_TICK_HEIGHT_DP);
             mBarWeight = ta.getDimension(R.styleable.RangeBar_barWeight, DEFAULT_BAR_WEIGHT_PX);
             mBarColor = ta.getColor(R.styleable.RangeBar_barColor, DEFAULT_BAR_COLOR);
+            mActiveBarColor = mBarColor;
             mCircleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     ta.getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP),
                     getResources().getDisplayMetrics());
             mCircleColor = ta.getColor(R.styleable.RangeBar_selectorColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
+            mActiveCircleColor = mCircleColor;
             mTickColor = ta.getColor(R.styleable.RangeBar_tickColor, DEFAULT_TICK_COLOR);
+            mActiveTickColor = mTickColor;
             mConnectingLineWeight = ta.getDimension(R.styleable.RangeBar_connectingLineWeight,
                     DEFAULT_CONNECTING_LINE_WEIGHT_PX);
             mConnectingLineColor = ta.getColor(R.styleable.RangeBar_connectingLineColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
+            mActiveConnectingLineColor = mConnectingLineColor;
             mExpandedPinRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     ta.getDimension(R.styleable.RangeBar_pinRadius,
                             DEFAULT_EXPANDED_PIN_RADIUS_DP), getResources().getDisplayMetrics());
