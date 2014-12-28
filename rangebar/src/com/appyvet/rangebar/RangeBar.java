@@ -41,7 +41,7 @@ import android.view.View;
 import java.util.HashMap;
 
 /**
- * The RangeBar is a double-sided version of a {@link android.widget.SeekBar}
+ * The MaterialRangeBar is a single or double-sided version of a {@link android.widget.SeekBar}
  * with discrete values. Whereas the thumb for the SeekBar can be dragged to any
  * position in the bar, the RangeBar only allows its thumbs to be dragged to
  * discrete positions (denoted by tick marks) in the bar. When released, a
@@ -50,7 +50,7 @@ import java.util.HashMap;
  * https://github.com/edmodo/range-bar.git
  * <p>
  * Clients of the RangeBar can attach a
- * {@link com.appyvet.rangebar.RangeBar.OnRangeBarChangeListener} to be notified when the thumbs
+ * {@link com.appyvet.rangebar.RangeBar.OnRangeBarChangeListener} to be notified when the pins
  * have
  * been moved.
  */
@@ -868,7 +868,6 @@ public class RangeBar extends View {
      *
      * @param context Context from the constructor.
      * @param attrs   AttributeSet from the constructor.
-     * @return none
      */
     private void rangeBarInit(Context context, AttributeSet attrs) {
         //TODO tick value map

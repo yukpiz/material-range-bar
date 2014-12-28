@@ -64,7 +64,7 @@ class PinView extends View {
     private String mValue;
 
     // Radius of the new thumb if selected
-    private int mThumbRadiusPx;
+    private int mPinRadiusPx;
 
     private ColorFilter mPinFilter;
 
@@ -82,7 +82,25 @@ class PinView extends View {
 
     // Constructors ////////////////////////////////////////////////////////////
 
-    public void init(Context ctx, float y, float thumbRadiusDP, int pinColor, int textColor,
+    public PinView(Context context) {
+        super(context);
+    }
+
+    // Initialization //////////////////////////////////////////////////////////
+
+    /**
+     * The view is created empty with a default constructor. Use init to set all the initial
+     * variables for the pin
+     *
+     * @param ctx          Context
+     * @param y            The y coordinate to raw the pin (i.e. the bar location)
+     * @param pinRadiusDP  the initial size of the pin
+     * @param pinColor     the color of the pin
+     * @param textColor    the color of the value text in the pin
+     * @param circleRadius the radius of the selector circle
+     * @param circleColor  the color of the selector circle
+     */
+    public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor,
             float circleRadius, int circleColor) {
         mRes = ctx.getResources();
         mPin = ctx.getResources().getDrawable(R.drawable.rotate);
@@ -94,15 +112,16 @@ class PinView extends View {
                 3.5f, mRes.getDisplayMetrics());
         // If one of the attributes are set, but the others aren't, set the
         // attributes to default
-        if (thumbRadiusDP == -1) {
-            mThumbRadiusPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+        if (pinRadiusDP == -1) {
+            mPinRadiusPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     DEFAULT_THUMB_RADIUS_DP,
                     mRes.getDisplayMetrics());
         } else {
-            mThumbRadiusPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    thumbRadiusDP,
+            mPinRadiusPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    pinRadiusDP,
                     mRes.getDisplayMetrics());
         }
+        //Set text size in px from dp
         int textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                 15, mRes.getDisplayMetrics());
 
@@ -121,7 +140,7 @@ class PinView extends View {
 
         // Sets the minimum touchable area, but allows it to expand based on
         // image size
-        int targetRadius = (int) Math.max(MINIMUM_TARGET_RADIUS_DP, mThumbRadiusPx);
+        int targetRadius = (int) Math.max(MINIMUM_TARGET_RADIUS_DP, mPinRadiusPx);
 
         mTargetRadiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 targetRadius,
@@ -129,42 +148,71 @@ class PinView extends View {
         mY = y;
     }
 
-    public PinView(Context context) {
-        super(context);
-    }
-
+    /**
+     * Set the x value of the pin
+     *
+     * @param x set x value of the pin
+     */
     @Override
     public void setX(float x) {
         mX = x;
     }
 
 
+    /**
+     * Get the x value of the pin
+     *
+     * @return x float value of the pin
+     */
     @Override
     public float getX() {
         return mX;
     }
 
-    void setXValue(String x) {
+
+    /**
+     * Set the value of the pin
+     *
+     * @param x String value of the pin
+     */
+    public void setXValue(String x) {
         mValue = x;
     }
 
-
+    /**
+     * Determine if the pin is pressed
+     *
+     * @return true if is in pressed state
+     * false otherwise
+     */
     @Override
     public boolean isPressed() {
         return mIsPressed;
     }
 
-    void press() {
+    /**
+     * Sets the state of the pin to pressed
+     */
+    public void press() {
         mIsPressed = true;
     }
 
-    void setSize(float size, float padding) {
+    /**
+     * Set size of the pin and padding for use when animating pin enlargement on press
+     *
+     * @param size    the size of the pin radius
+     * @param padding the size of the padding
+     */
+    public void setSize(float size, float padding) {
         mPinPadding = (int) padding;
-        mThumbRadiusPx = (int) size;
+        mPinRadiusPx = (int) size;
         invalidate();
     }
 
-    void release() {
+    /**
+     * Release the pin, sets pressed state to false
+     */
+    public void release() {
         mIsPressed = false;
     }
 
@@ -177,20 +225,20 @@ class PinView extends View {
      * @return true if the coordinates are within this thumb's target area;
      * false otherwise
      */
-    boolean isInTargetZone(float x, float y) {
+    public boolean isInTargetZone(float x, float y) {
         return (Math.abs(x - mX) <= mTargetRadiusPx
                 && Math.abs(y - mY + mPinPadding) <= mTargetRadiusPx);
     }
 
-
+    //Draw the circle regardless of pressed state. If pin size is >0 then also draw the pin and text
     @Override
     public void draw(Canvas canvas) {
         canvas.drawCircle(mX, mY, mCircleRadiusPx, mCirclePaint);
         //Draw pin if pressed
-        if (mThumbRadiusPx > 0) {
-            mBounds.set((int) mX - mThumbRadiusPx,
-                    (int) mY - (mThumbRadiusPx * 2) - (int) mPinPadding,
-                    (int) mX + mThumbRadiusPx, (int) mY - (int) mPinPadding);
+        if (mPinRadiusPx > 0) {
+            mBounds.set((int) mX - mPinRadiusPx,
+                    (int) mY - (mPinRadiusPx * 2) - (int) mPinPadding,
+                    (int) mX + mPinRadiusPx, (int) mY - (int) mPinPadding);
             mPin.setBounds(mBounds);
             String text = mValue;
             if (mValue.length() > 4) {
@@ -202,11 +250,14 @@ class PinView extends View {
             mPin.setColorFilter(mPinFilter);
             mPin.draw(canvas);
             canvas.drawText(text,
-                    mX, mY - mThumbRadiusPx - mPinPadding + mTextYPadding,
+                    mX, mY - mPinRadiusPx - mPinPadding + mTextYPadding,
                     mTextPaint);
         }
     }
 
+    // Private Methods /////////////////////////////////////////////////////////////////
+
+    //Set text size based on available pin width.
     private static void calibrateTextSize(Paint paint, String text, float min, float max,
             float boxWidth) {
         paint.setTextSize(10);

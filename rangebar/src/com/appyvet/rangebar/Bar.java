@@ -22,33 +22,52 @@ import android.util.TypedValue;
  * This class represents the underlying gray bar in the RangeBar (without the
  * thumbs).
  */
-class Bar {
+public class Bar {
 
     // Member Variables ////////////////////////////////////////////////////////
 
     private final Paint mBarPaint;
+
     private final Paint mTickPaint;
 
     // Left-coordinate of the horizontal bar.
     private final float mLeftX;
+
     private final float mRightX;
+
     private final float mY;
 
     private int mNumSegments;
+
     private float mTickDistance;
+
     private final float mTickHeight;
 
     // Constructor /////////////////////////////////////////////////////////////
 
-    Bar(Context ctx,
-        float x,
-        float y,
-        float length,
-        int tickCount,
-        float tickHeightDP,
-        int tickColor,
-        float barWeight,
-        int barColor) {
+
+    /**
+     * Bar constructor
+     *
+     * @param ctx          the context
+     * @param x            the start x co-ordinate
+     * @param y            the y co-ordinate
+     * @param length       the length of the bar in px
+     * @param tickCount    the number of ticks on the bar
+     * @param tickHeightDP the height of each tick
+     * @param tickColor    the color of each tick
+     * @param barWeight    the weight of the bar
+     * @param barColor     the color of the bar
+     */
+    public Bar(Context ctx,
+            float x,
+            float y,
+            float length,
+            int tickCount,
+            float tickHeightDP,
+            int tickColor,
+            float barWeight,
+            int barColor) {
 
         mLeftX = x;
         mRightX = x + length;
@@ -57,8 +76,8 @@ class Bar {
         mNumSegments = tickCount - 1;
         mTickDistance = length / mNumSegments;
         mTickHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                tickHeightDP,
-                                                ctx.getResources().getDisplayMetrics());
+                tickHeightDP,
+                ctx.getResources().getDisplayMetrics());
 
         // Initialize the paint.
         mBarPaint = new Paint();
@@ -75,30 +94,30 @@ class Bar {
 
     /**
      * Draws the bar on the given Canvas.
-     * 
+     *
      * @param canvas Canvas to draw on; should be the Canvas passed into {#link
-     *            View#onDraw()}
+     *               View#onDraw()}
      */
-    void draw(Canvas canvas) {
+    public void draw(Canvas canvas) {
 
         canvas.drawLine(mLeftX, mY, mRightX, mY, mBarPaint);
     }
 
     /**
      * Get the x-coordinate of the left edge of the bar.
-     * 
+     *
      * @return x-coordinate of the left edge of the bar
      */
-    float getLeftX() {
+    public float getLeftX() {
         return mLeftX;
     }
 
     /**
      * Get the x-coordinate of the right edge of the bar.
-     * 
+     *
      * @return x-coordinate of the right edge of the bar
      */
-    float getRightX() {
+    public float getRightX() {
         return mRightX;
     }
 
@@ -108,13 +127,11 @@ class Bar {
      * @param thumb the thumb to find the nearest tick for
      * @return the x-coordinate of the nearest tick
      */
-    float getNearestTickCoordinate(PinView thumb) {
+    public float getNearestTickCoordinate(PinView thumb) {
 
         final int nearestTickIndex = getNearestTickIndex(thumb);
 
-        final float nearestTickCoordinate = mLeftX + (nearestTickIndex * mTickDistance);
-
-        return nearestTickCoordinate;
+        return mLeftX + (nearestTickIndex * mTickDistance);
     }
 
     /**
@@ -123,20 +140,18 @@ class Bar {
      * @param thumb the Thumb to find the nearest tick for
      * @return the zero-based index of the nearest tick
      */
-    int getNearestTickIndex(PinView thumb) {
+    public int getNearestTickIndex(PinView thumb) {
 
-        final int nearestTickIndex = (int) ((thumb.getX() - mLeftX + mTickDistance / 2f) / mTickDistance);
-
-        return nearestTickIndex;
+        return (int) ((thumb.getX() - mLeftX + mTickDistance / 2f) / mTickDistance);
     }
 
 
     /**
      * Set the number of ticks that will appear in the RangeBar.
-     * 
+     *
      * @param tickCount the number of ticks
      */
-    void setTickCount(int tickCount) {
+    public void setTickCount(int tickCount) {
 
         final float barLength = mRightX - mLeftX;
 
@@ -148,9 +163,9 @@ class Bar {
 
     /**
      * Draws the tick marks on the bar.
-     * 
+     *
      * @param canvas Canvas to draw on; should be the Canvas passed into {#link
-     *            View#onDraw()}
+     *               View#onDraw()}
      */
     public void drawTicks(Canvas canvas) {
 

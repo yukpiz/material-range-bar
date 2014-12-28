@@ -22,29 +22,37 @@ import android.util.TypedValue;
 /**
  * Class representing the blue connecting line between the two thumbs.
  */
-class ConnectingLine {
+public class ConnectingLine {
 
     // Member Variables ////////////////////////////////////////////////////////
 
     private final Paint mPaint;
 
-    private final float mConnectingLineWeight;
     private final float mY;
 
     // Constructor /////////////////////////////////////////////////////////////
 
-    ConnectingLine(Context ctx, float y, float connectingLineWeight, int connectingLineColor) {
+    /**
+     * Constructor for connecting line
+     *
+     * @param ctx                  the context for the line
+     * @param y                    the y co-ordinate for the line
+     * @param connectingLineWeight the weight of the line
+     * @param connectingLineColor  the color of the line
+     */
+    public ConnectingLine(Context ctx, float y, float connectingLineWeight,
+            int connectingLineColor) {
 
         final Resources res = ctx.getResources();
 
-        mConnectingLineWeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                                          connectingLineWeight,
-                                                          res.getDisplayMetrics());
+        float connectingLineWeight1 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                connectingLineWeight,
+                res.getDisplayMetrics());
 
         // Initialize the paint, set values
         mPaint = new Paint();
         mPaint.setColor(connectingLineColor);
-        mPaint.setStrokeWidth(mConnectingLineWeight);
+        mPaint.setStrokeWidth(connectingLineWeight1);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setAntiAlias(true);
 
@@ -55,21 +63,22 @@ class ConnectingLine {
 
     /**
      * Draw the connecting line between the two thumbs in rangebar.
-     * 
-     * @param canvas the Canvas to draw to
-     * @param leftThumb the left thumb
+     *
+     * @param canvas     the Canvas to draw to
+     * @param leftThumb  the left thumb
      * @param rightThumb the right thumb
      */
-    void draw(Canvas canvas, PinView leftThumb, PinView rightThumb) {
+    public void draw(Canvas canvas, PinView leftThumb, PinView rightThumb) {
         canvas.drawLine(leftThumb.getX(), mY, rightThumb.getX(), mY, mPaint);
     }
+
     /**
      * Draw the connecting line between for single slider.
      *
-     * @param canvas the Canvas to draw to
+     * @param canvas     the Canvas to draw to
      * @param rightThumb the right thumb
      */
-    void draw(Canvas canvas, float leftMargin, PinView rightThumb) {
+    public void draw(Canvas canvas, float leftMargin, PinView rightThumb) {
         canvas.drawLine(leftMargin, mY, rightThumb.getX(), mY, mPaint);
     }
 }
