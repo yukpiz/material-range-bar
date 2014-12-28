@@ -1,8 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply from: '../maven_push.gradle'
 
-version = "0.0.7"
+version = "0.1.0"
 group = "com.appyvet"
 
 android {
@@ -28,10 +29,10 @@ repositories {
     mavenCentral()
 }
 
-signing {
-    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
+//signing {
+//    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+//    sign configurations.archives
+//}
 
 task publishLocal(type: Upload) {
     configuration = configurations.archives
