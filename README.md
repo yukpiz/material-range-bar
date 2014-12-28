@@ -26,6 +26,8 @@ Finally, the following property can be set programmatically, but not via XML:
 
 Supported on API Level 12 and above for animations.
 https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot%20pin%20active.png
+
+![Img](https://github.com/oli107/material-range-bar/blob/master/Screenshots/pin%20expand.gif)
 ![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot%20pin%20active.png)
 ![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
 
