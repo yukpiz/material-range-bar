@@ -10,7 +10,6 @@ It is similar to an enhanced SeekBar widget, though it doesn't make use of the S
 
 Supported on API Level 12 and above for animations.
 ![Img](https://github.com/oli107/material-range-bar/blob/master/Screenshots/pin%20expand.gif)
-![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
 
 Developers can customize the following attributes (both via XML and programmatically):
 
@@ -49,6 +48,9 @@ selectorSize | dimension
 ```
 pin indices (the location of the thumbs on the RangeBar)
 ```
+
+![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
+
 
 Examples
 =======
