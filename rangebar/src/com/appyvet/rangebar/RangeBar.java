@@ -556,12 +556,21 @@ public class RangeBar extends View {
     }
 
     /**
-     * Set the color of the bar line and the tick lines in the range bar.
+     * Set the color of the pins.
      *
-     * @param pinColor Integer specifying the color of the bar line.
+     * @param pinColor Integer specifying the color of the pin.
      */
     public void setPinColor(int pinColor) {
         mPinColor = pinColor;
+        createPins();
+    }
+    /**
+     * Set the color of the text within the pin.
+     *
+     * @param textColor Integer specifying the color of the text in the pin.
+     */
+    public void setPinTextColor(int textColor) {
+        mTextColor = textColor;
         createPins();
     }
 
@@ -913,6 +922,8 @@ public class RangeBar extends View {
                     .getDimension(R.styleable.RangeBar_tickHeight, DEFAULT_TICK_HEIGHT_DP);
             mBarWeight = ta.getDimension(R.styleable.RangeBar_barWeight, DEFAULT_BAR_WEIGHT_PX);
             mBarColor = ta.getColor(R.styleable.RangeBar_barColor, DEFAULT_BAR_COLOR);
+            mTextColor = ta.getColor(R.styleable.RangeBar_textColor, DEFAULT_TEXT_COLOR);
+            mPinColor = ta.getColor(R.styleable.RangeBar_pinColor, DEFAULT_PIN_COLOR);
             mActiveBarColor = mBarColor;
             mCircleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     ta.getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP),

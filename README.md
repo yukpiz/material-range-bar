@@ -11,7 +11,13 @@ It is similar to an enhanced SeekBar widget, though it doesn't make use of the S
 Supported on API Level 12 and above for animations.
 ![Img](https://github.com/oli107/material-range-bar/blob/master/Screenshots/pin%20expand.gif)
 
-Developers can customize the following attributes (both via XML and programmatically):
+Developers can customize the following attributes (both via XML and programatically):
+
+### Change Log
+```
+0.1 - released onto Maven Central. Fixed color pickers in sample. Added ability to set pin color via XML and pin text color via XML or programatically
+0.0.1 - 0.0.7 - Initial releases.
+```
 
 ### Tick Properties
 ```
@@ -36,6 +42,8 @@ connectingLineColor | reference or color
 ```
 pinPadding | dimension
 pinRadius | dimension
+pinColor | reference or color
+textColor | reference or color
 ```
 
 ### Selector Properties
@@ -92,7 +100,6 @@ TODO
 =======
 - Better instructions.
 - Properly implement Map of strings to each value
-- Generally make it a better project!
 
 Demo
 =======
@@ -104,12 +111,8 @@ Installation
 
 **build.gradle**
 
-	 maven {
-        url 'http://dl.bintray.com/oli107/maven'
-    }
-
 	dependencies {
-    compile 'com.appyvet:rangebar:0.0.7'
+    compile 'com.appyvet:materialrangebar:0.1'
 	}
 
 License
