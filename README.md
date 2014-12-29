@@ -1,3 +1,5 @@
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MaterialRangeBar-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1272)
+
 MaterialRangeBar
 =======
 MaterialRangeBar is a fork of https://github.com/edmodo/range-bar that adds some basic material styling, as well as start and end values, values as floats and some other things. It is aiming to mimic this:
@@ -5,6 +7,10 @@ MaterialRangeBar is a fork of https://github.com/edmodo/range-bar that adds some
 http://www.google.com/design/spec/components/sliders.html
 
 It is similar to an enhanced SeekBar widget, though it doesn't make use of the SeekBar. It provides for the selection of a range of values as well as for a single value. The selectable range values are discrete values designated by tick marks; the pin (handle) will snap to the nearest tick mark. This is my first library project, apologies for poor coding, etc etc.
+
+Supported on API Level 12 and above for animations.
+![Img](https://github.com/oli107/material-range-bar/blob/master/Screenshots/pin%20expand.gif)
+![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
 
 Developers can customize the following attributes (both via XML and programmatically):
 
@@ -37,15 +43,12 @@ pinRadius | dimension
 ```
 selectorColor | reference or color
 selectorSize | dimension
+```
 
 ### Via runtime only (no XML option)
 ```
 pin indices (the location of the thumbs on the RangeBar)
 ```
-
-Supported on API Level 12 and above for animations.
-![Img](https://github.com/oli107/material-range-bar/blob/master/Screenshots/pin%20expand.gif)
-![ScreenShot](https://github.com/oli107/material-range-bar/blob/master/Screenshots/screenshot.png)
 
 Examples
 =======
