@@ -9,6 +9,7 @@ http://www.google.com/design/spec/components/sliders.html
 It is similar to an enhanced SeekBar widget, though it doesn't make use of the SeekBar. It provides for the selection of a range of values as well as for a single value. The selectable range values are discrete values designated by tick marks; the pin (handle) will snap to the nearest tick mark. This is my first library project, apologies for poor coding, etc etc.
 
 Supported on API Level 12 and above for animations.
+
 ![Img](https://github.com/oli107/material-range-bar/blob/master/Screenshots/pin%20expand.gif)
 
 Developers can customize the following attributes (both via XML and programatically):
@@ -66,7 +67,7 @@ Examples
 ## Layout XML
 
 This is a rangebar with both a lower and upper value
-```
+```xml
 <com.appyvet.rangebar.RangeBar
         xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rangebar"
@@ -80,7 +81,7 @@ This is a rangebar with both a lower and upper value
 ```
 
 This is a seekbar with only a single value (note rangeBar=false)
-```
+```xml
 <com.appyvet.rangebar.RangeBar
         xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rangebar"
@@ -111,9 +112,11 @@ Installation
 
 **build.gradle**
 
-	dependencies {
+```groovy
+dependencies {
     compile 'com.appyvet:materialrangebar:0.1'
-	}
+}
+```
 
 License
 =======
