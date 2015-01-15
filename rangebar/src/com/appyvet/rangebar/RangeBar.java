@@ -1249,7 +1249,9 @@ public class RangeBar extends View {
      * @param tickIndex the index to set the value for
      */
     private String getPinValue(int tickIndex) {
-        float tickValue = (tickIndex * mTickInterval) + mTickStart;
+        float tickValue = (tickIndex == (mTickCount - 1))
+                            ? mTickEnd
+                            : (tickIndex * mTickInterval) + mTickStart;
         String xValue = mTickMap.get(tickValue);
         if (xValue == null) {
             if (tickValue == Math.ceil(tickValue)) {
