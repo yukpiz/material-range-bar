@@ -165,6 +165,15 @@ public class RangeBar extends View {
 
     private int mActiveCircleColor;
 
+    //Used for ignoring vertical moves
+    private int mDiffX;
+
+    private int mDiffY;
+
+    private float mLastX;
+
+    private float mLastY;
+
     // Constructors ////////////////////////////////////////////////////////////
 
     public RangeBar(Context context) {
@@ -368,6 +377,11 @@ public class RangeBar extends View {
         switch (event.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
+                mDiffX = 0;
+                mDiffY = 0;
+
+                mLastX = event.getX();
+                mLastY = event.getY();
                 onActionDown(event.getX(), event.getY());
                 return true;
 
@@ -380,6 +394,20 @@ public class RangeBar extends View {
             case MotionEvent.ACTION_MOVE:
                 onActionMove(event.getX());
                 this.getParent().requestDisallowInterceptTouchEvent(true);
+                final float curX = event.getX();
+                final float curY = event.getY();
+                mDiffX += Math.abs(curX - mLastX);
+                mDiffY += Math.abs(curY - mLastY);
+                mLastX = curX;
+                mLastY = curY;
+
+                if (mDiffX < mDiffY) {
+                    //vertical touch
+                    getParent().requestDisallowInterceptTouchEvent(false);
+                    return false;
+                } else {
+                    //horizontal touch (do nothing as it is needed for RangeBar)
+                }
                 return true;
 
             default:
