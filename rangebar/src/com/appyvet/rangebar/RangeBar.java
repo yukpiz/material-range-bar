@@ -1060,8 +1060,8 @@ public class RangeBar extends View {
      * @return boolean If the index is out of range.
      */
     private boolean valueOutOfRange(float leftThumbValue, float rightThumbValue) {
-        return (leftThumbValue < mTickStart || leftThumbValue >= mTickEnd
-                || rightThumbValue < mTickStart || rightThumbValue >= mTickEnd);
+        return (leftThumbValue < mTickStart || leftThumbValue > mTickEnd
+                || rightThumbValue < mTickStart || rightThumbValue > mTickEnd);
     }
 
     /**
