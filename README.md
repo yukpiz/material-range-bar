@@ -16,6 +16,7 @@ Developers can customize the following attributes (both via XML and programatica
 
 ### Change Log
 ```
+1.0 - Merged pull requests to fix range bar issues and issues in scrollview, promoted to 1.0 release due to few other PRs.
 0.1 - released onto Maven Central. Fixed color pickers in sample. Added ability to set pin color via XML and pin text color via XML or programatically
 0.0.1 - 0.0.7 - Initial releases.
 ```
@@ -95,8 +96,15 @@ This is a seekbar with only a single value (note rangeBar=false)
 ## Adding a listener
 //TODO add a full example here
 - Add a listener - rangeBar.setOnRangeBarChangeListener which returns left and right index as well as value.
-
-
+```java
+rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+            @Override
+            public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
+                    int rightPinIndex,
+                    String leftPinValue, String rightPinValue) {
+            }
+        });
+```
 TODO
 =======
 - Better instructions.
@@ -114,13 +122,13 @@ Installation
 
 ```groovy
 dependencies {
-    compile 'com.appyvet:materialrangebar:0.1'
+    compile 'com.appyvet:materialrangebar:1.0'
 }
 ```
 
 License
 =======
-Copyright 2014, AppyVet, Inc. 
+Copyright 2015, AppyVet, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License.
 You may obtain a copy of the License in the LICENSE file, or at:

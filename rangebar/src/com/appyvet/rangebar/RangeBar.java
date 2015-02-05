@@ -13,7 +13,7 @@
 
 package com.appyvet.rangebar;
 /*
- * Copyright 2014, Appyvet, Inc.
+ * Copyright 2015, Appyvet, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License.
  * You may obtain a copy of the License in the LICENSE file, or at:
@@ -1147,9 +1147,6 @@ public class RangeBar extends View {
             float leftThumbXDistance = mIsRangeBar ? Math.abs(mLeftThumb.getX() - x) : 0;
             float rightThumbXDistance = Math.abs(mRightThumb.getX() - x);
 
-            // Get the updated nearest tick marks for each thumb.
-            final int newLeftIndex = mIsRangeBar ? mBar.getNearestTickIndex(mLeftThumb) : 0;
-            final int newRightIndex = mBar.getNearestTickIndex(mRightThumb);
             if (leftThumbXDistance < rightThumbXDistance) {
                 if (mIsRangeBar) {
                     mLeftThumb.setX(x);
@@ -1160,6 +1157,9 @@ public class RangeBar extends View {
                 releasePin(mRightThumb);
             }
 
+            // Get the updated nearest tick marks for each thumb.
+            final int newLeftIndex = mIsRangeBar ? mBar.getNearestTickIndex(mLeftThumb) : 0;
+            final int newRightIndex = mBar.getNearestTickIndex(mRightThumb);
             // If either of the indices have changed, update and call the listener.
             if (newLeftIndex != mLeftIndex || newRightIndex != mRightIndex) {
 
