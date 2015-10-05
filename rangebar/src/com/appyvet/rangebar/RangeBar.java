@@ -176,6 +176,14 @@ public class RangeBar extends View {
 
     private boolean mArePinsTemporary = true;
 
+    private PinTextFormatter mPinTextFormatter = new PinTextFormatter() {
+        @Override
+        public String getText(String value) {
+            if (value.length() > 4) return value.substring(0, 4);
+            else return value;
+        }
+    };
+
     // Constructors ////////////////////////////////////////////////////////////
 
     public RangeBar(Context context) {
@@ -915,6 +923,9 @@ public class RangeBar extends View {
         super.setEnabled(enabled);
     }
 
+    public void setPinTextFormatter(PinTextFormatter pinTextFormatter) {
+        this.mPinTextFormatter = pinTextFormatter;
+    }
 
     // Private Methods /////////////////////////////////////////////////////////
 
@@ -1314,7 +1325,7 @@ public class RangeBar extends View {
                 xValue = String.valueOf(tickValue);
             }
         }
-        return xValue;
+        return mPinTextFormatter.getText(xValue);
     }
 
     /**
@@ -1342,9 +1353,13 @@ public class RangeBar extends View {
      * listener will only be called when either thumb's index has changed - not
      * for every movement of the thumb.
      */
-    public static interface OnRangeBarChangeListener {
+    public interface OnRangeBarChangeListener {
 
         public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
                                           int rightPinIndex, String leftPinValue, String rightPinValue);
+    }
+
+    public interface PinTextFormatter {
+        public String getText(String value);
     }
 }

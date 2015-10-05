@@ -101,7 +101,7 @@ class PinView extends View {
      * @param circleColor  the color of the selector circle
      */
     public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor,
-            float circleRadius, int circleColor) {
+                     float circleRadius, int circleColor) {
         mRes = ctx.getResources();
         mPin = ctx.getResources().getDrawable(R.drawable.rotate);
 
@@ -241,9 +241,6 @@ class PinView extends View {
                     (int) mX + mPinRadiusPx, (int) mY - (int) mPinPadding);
             mPin.setBounds(mBounds);
             String text = mValue;
-            if (mValue.length() > 4) {
-                text = mValue.substring(0, 4);
-            }
             calibrateTextSize(mTextPaint, text, 8, 24, mBounds.width());
             mTextPaint.getTextBounds(text, 0, text.length(), mBounds);
             mTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -259,7 +256,7 @@ class PinView extends View {
 
     //Set text size based on available pin width.
     private static void calibrateTextSize(Paint paint, String text, float min, float max,
-            float boxWidth) {
+                                          float boxWidth) {
         paint.setTextSize(10);
         paint.setTextSize(Math.max(Math.min((boxWidth / paint.measureText(text)) * 10, max), min));
     }
