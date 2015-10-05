@@ -12,6 +12,8 @@
         <attr name="pinColor" format="reference|color" />
         <attr name="selectorSize" format="dimension" />
         <attr name="pinPadding" format="dimension" />
+        <attr name="pinMinFont" format="dimension" />
+        <attr name="pinMaxFont" format="dimension" />
         <attr name="rangeBarPaddingBottom" format="dimension" />
         <attr name="selectorColor" format="reference|color" />
         <attr name="rangeBar" format="boolean" />

@@ -71,6 +71,10 @@ public class RangeBar extends View {
 
     private static final float DEFAULT_PIN_PADDING_DP = 16;
 
+    public static final float DEFAULT_MIN_PIN_FONT_SP = 8;
+
+    public static final float DEFAULT_MAX_PIN_FONT_SP = 24;
+
     private static final float DEFAULT_BAR_WEIGHT_PX = 2;
 
     private static final int DEFAULT_BAR_COLOR = Color.LTGRAY;
@@ -87,7 +91,7 @@ public class RangeBar extends View {
     // Corresponds to material indigo 500.
     private static final int DEFAULT_CONNECTING_LINE_COLOR = 0xff3f51b5;
 
-    private static final float DEFAULT_EXPANDED_PIN_RADIUS_DP = 14;
+    private static final float DEFAULT_EXPANDED_PIN_RADIUS_DP = 12;
 
     private static final float DEFAULT_CIRCLE_SIZE_DP = 5;
 
@@ -124,6 +128,9 @@ public class RangeBar extends View {
     private int mCircleColor = DEFAULT_CONNECTING_LINE_COLOR;
 
     private float mCircleSize = DEFAULT_CIRCLE_SIZE_DP;
+
+    private float mMinPinFont = DEFAULT_MIN_PIN_FONT_SP;
+    private float mMaxPinFont = DEFAULT_MAX_PIN_FONT_SP;
 
     // setTickCount only resets indices before a thumb has been pressed or a
     // setThumbIndices() is called, to correspond with intended usage
@@ -234,6 +241,9 @@ public class RangeBar extends View {
 
         bundle.putBoolean("FIRST_SET_TICK_COUNT", mFirstSetTickCount);
 
+        bundle.putFloat("MIN_PIN_FONT", mMinPinFont);
+        bundle.putFloat("MAX_PIN_FONT", mMaxPinFont);
+
         return bundle;
     }
 
@@ -267,6 +277,9 @@ public class RangeBar extends View {
             mLeftIndex = bundle.getInt("LEFT_INDEX");
             mRightIndex = bundle.getInt("RIGHT_INDEX");
             mFirstSetTickCount = bundle.getBoolean("FIRST_SET_TICK_COUNT");
+
+            mMinPinFont = bundle.getFloat("MIN_PIN_FONT");
+            mMaxPinFont = bundle.getFloat("MAX_PIN_FONT");
 
             setRangePinsByIndices(mLeftIndex, mRightIndex);
             super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
@@ -325,10 +338,10 @@ public class RangeBar extends View {
         final float yPos = h - mBarPaddingBottom;
         if (mIsRangeBar) {
             mLeftThumb = new PinView(ctx);
-            mLeftThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor);
+            mLeftThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
         }
         mRightThumb = new PinView(ctx);
-        mRightThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor);
+        mRightThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
 
         // Create the underlying bar.
         final float marginLeft = mExpandedPinRadius;
@@ -1008,6 +1021,10 @@ public class RangeBar extends View {
             mIsRangeBar = ta.getBoolean(R.styleable.RangeBar_rangeBar, true);
             mArePinsTemporary = ta.getBoolean(R.styleable.RangeBar_temporaryPins, true);
 
+            float density = getResources().getDisplayMetrics().density;
+            mMinPinFont = ta.getDimension(R.styleable.RangeBar_pinMinFont, DEFAULT_MIN_PIN_FONT_SP * density);
+            mMaxPinFont = ta.getDimension(R.styleable.RangeBar_pinMaxFont, DEFAULT_MAX_PIN_FONT_SP * density);
+
         } finally {
             ta.recycle();
         }
@@ -1050,10 +1067,10 @@ public class RangeBar extends View {
 
         if (mIsRangeBar) {
             mLeftThumb = new PinView(ctx);
-            mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+            mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
         }
         mRightThumb = new PinView(ctx);
-        mRightThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor);
+        mRightThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
 
 
         float marginLeft = getMarginLeft();

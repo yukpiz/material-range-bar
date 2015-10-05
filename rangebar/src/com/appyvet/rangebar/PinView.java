@@ -80,6 +80,9 @@ class PinView extends View {
 
     private float mCircleRadiusPx;
 
+    private float mMinPinFont = RangeBar.DEFAULT_MIN_PIN_FONT_SP;
+    private float mMaxPinFont = RangeBar.DEFAULT_MAX_PIN_FONT_SP;
+
     // Constructors ////////////////////////////////////////////////////////////
 
     public PinView(Context context) {
@@ -100,10 +103,14 @@ class PinView extends View {
      * @param circleRadius the radius of the selector circle
      * @param circleColor  the color of the selector circle
      */
-    public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor,
-                     float circleRadius, int circleColor) {
+    public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor, float circleRadius, int circleColor, float minFont, float maxFont) {
+
         mRes = ctx.getResources();
         mPin = ctx.getResources().getDrawable(R.drawable.rotate);
+
+        float density = getResources().getDisplayMetrics().density;
+        mMinPinFont = minFont / density;
+        mMaxPinFont = maxFont / density;
 
         mPinPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 15, mRes.getDisplayMetrics());
@@ -241,7 +248,7 @@ class PinView extends View {
                     (int) mX + mPinRadiusPx, (int) mY - (int) mPinPadding);
             mPin.setBounds(mBounds);
             String text = mValue;
-            calibrateTextSize(mTextPaint, text, 8, 24, mBounds.width());
+            calibrateTextSize(mTextPaint, text, mBounds.width());
             mTextPaint.getTextBounds(text, 0, text.length(), mBounds);
             mTextPaint.setTextAlign(Paint.Align.CENTER);
             mPin.setColorFilter(mPinFilter);
@@ -255,9 +262,16 @@ class PinView extends View {
     // Private Methods /////////////////////////////////////////////////////////////////
 
     //Set text size based on available pin width.
-    private static void calibrateTextSize(Paint paint, String text, float min, float max,
-                                          float boxWidth) {
+    private void calibrateTextSize(Paint paint, String text, float boxWidth) {
         paint.setTextSize(10);
-        paint.setTextSize(Math.max(Math.min((boxWidth / paint.measureText(text)) * 10, max), min));
+
+        float density = getResources().getDisplayMetrics().density;
+        float textSize = paint.measureText(text);
+        float estimatedFontSize = boxWidth * 8 / textSize / density;
+
+        if (estimatedFontSize < mMinPinFont) estimatedFontSize = mMinPinFont;
+        else if (estimatedFontSize > mMaxPinFont) estimatedFontSize = mMaxPinFont;
+
+        paint.setTextSize(estimatedFontSize * density);
     }
 }
