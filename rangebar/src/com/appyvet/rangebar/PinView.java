@@ -21,6 +21,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -117,7 +118,7 @@ class PinView extends View {
             float circleRadius, int circleColor, float minFont, float maxFont) {
 
         mRes = ctx.getResources();
-        mPin = ctx.getResources().getDrawable(R.drawable.rotate);
+            mPin = ContextCompat.getDrawable(ctx, R.drawable.rotate);
 
         mDensity = getResources().getDisplayMetrics().density;
         mMinPinFont = minFont / mDensity;

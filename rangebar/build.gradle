@@ -3,9 +3,11 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 apply from: '../maven_push.gradle'
 
-version = "1.0"
+version = "1.1"
 group = "com.appyvet"
-
+dependencies {
+    compile 'com.android.support:support-v4:23.0.1'
+}
 android {
 
     compileSdkVersion 23

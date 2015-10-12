@@ -48,7 +48,6 @@ import java.util.HashMap;
  * RangeBar thumb will snap to the nearest tick mark.
  * This version is forked from edmodo range bar
  * https://github.com/edmodo/range-bar.git
- * <p/>
  * Clients of the RangeBar can attach a
  * {@link com.appyvet.rangebar.RangeBar.OnRangeBarChangeListener} to be notified when the pins
  * have
@@ -476,6 +475,9 @@ public class RangeBar extends View {
 
     /**
      * Sets a listener to modify the text
+     *
+     * @param mPinTextListener the RangeBar pin text notification listener; null to remove any
+     *                 existing listener
      */
     public void setPinTextListener(OnRangeBarTextListener mPinTextListener) {
         this.mPinTextListener = mPinTextListener;
