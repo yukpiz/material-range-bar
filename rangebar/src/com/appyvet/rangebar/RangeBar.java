@@ -130,6 +130,7 @@ public class RangeBar extends View {
     private float mCircleSize = DEFAULT_CIRCLE_SIZE_DP;
 
     private float mMinPinFont = DEFAULT_MIN_PIN_FONT_SP;
+
     private float mMaxPinFont = DEFAULT_MAX_PIN_FONT_SP;
 
     // setTickCount only resets indices before a thumb has been pressed or a
@@ -182,6 +183,7 @@ public class RangeBar extends View {
     private float mLastX;
 
     private float mLastY;
+
     private IRangeBarFormatter mFormatter;
 
     private boolean drawTicks = true;
@@ -191,8 +193,11 @@ public class RangeBar extends View {
     private PinTextFormatter mPinTextFormatter = new PinTextFormatter() {
         @Override
         public String getText(String value) {
-            if (value.length() > 4) return value.substring(0, 4);
-            else return value;
+            if (value.length() > 4) {
+                return value.substring(0, 4);
+            } else {
+                return value;
+            }
         }
     };
 
@@ -344,11 +349,13 @@ public class RangeBar extends View {
         if (mIsRangeBar) {
             mLeftThumb = new PinView(ctx);
             mLeftThumb.setFormatter(mFormatter);
-            mLeftThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
+            mLeftThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize,
+                    mCircleColor, mMinPinFont, mMaxPinFont);
         }
         mRightThumb = new PinView(ctx);
         mRightThumb.setFormatter(mFormatter);
-        mRightThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
+        mRightThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize,
+                mCircleColor, mMinPinFont, mMaxPinFont);
 
         // Create the underlying bar.
         final float marginLeft = mExpandedPinRadius;
@@ -391,13 +398,13 @@ public class RangeBar extends View {
         mBar.draw(canvas);
         if (mIsRangeBar) {
             mConnectingLine.draw(canvas, mLeftThumb, mRightThumb);
-            if(drawTicks) {
+            if (drawTicks) {
                 mBar.drawTicks(canvas);
             }
             mLeftThumb.draw(canvas);
         } else {
             mConnectingLine.draw(canvas, getMarginLeft(), mRightThumb);
-            if(drawTicks) {
+            if (drawTicks) {
                 mBar.drawTicks(canvas);
             }
         }
@@ -469,7 +476,6 @@ public class RangeBar extends View {
 
     /**
      * Sets a listener to modify the text
-     * @param mPinTextListener
      */
     public void setPinTextListener(OnRangeBarTextListener mPinTextListener) {
         this.mPinTextListener = mPinTextListener;
@@ -477,11 +483,11 @@ public class RangeBar extends View {
 
 
     public void setFormatter(IRangeBarFormatter formatter) {
-        if(mLeftThumb != null) {
+        if (mLeftThumb != null) {
             mLeftThumb.setFormatter(formatter);
         }
 
-        if(mRightThumb != null) {
+        if (mRightThumb != null) {
             mRightThumb.setFormatter(formatter);
         }
 
@@ -681,7 +687,8 @@ public class RangeBar extends View {
     /**
      * Set if the pins should dissapear after released
      *
-     * @param arePinsTemporary Boolean - true if pins shoudl dissapear after released, false to stay drawn
+     * @param arePinsTemporary Boolean - true if pins shoudl dissapear after released, false to stay
+     *                         drawn
      */
     public void setTemporaryPins(boolean arePinsTemporary) {
         mArePinsTemporary = arePinsTemporary;
@@ -1032,9 +1039,10 @@ public class RangeBar extends View {
             mTextColor = ta.getColor(R.styleable.RangeBar_textColor, DEFAULT_TEXT_COLOR);
             mPinColor = ta.getColor(R.styleable.RangeBar_pinColor, DEFAULT_PIN_COLOR);
             mActiveBarColor = mBarColor;
-            mCircleSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    ta.getDimension(R.styleable.RangeBar_selectorSize, DEFAULT_CIRCLE_SIZE_DP),
-                    getResources().getDisplayMetrics());
+            mCircleSize = ta.getDimension(R.styleable.RangeBar_selectorSize,
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_CIRCLE_SIZE_DP,
+                            getResources().getDisplayMetrics())
+            );
             mCircleColor = ta.getColor(R.styleable.RangeBar_selectorColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
             mActiveCircleColor = mCircleColor;
@@ -1045,22 +1053,25 @@ public class RangeBar extends View {
             mConnectingLineColor = ta.getColor(R.styleable.RangeBar_connectingLineColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
             mActiveConnectingLineColor = mConnectingLineColor;
-            mExpandedPinRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    ta.getDimension(R.styleable.RangeBar_pinRadius,
-                            DEFAULT_EXPANDED_PIN_RADIUS_DP), getResources().getDisplayMetrics());
-            mPinPadding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    ta.getDimension(R.styleable.RangeBar_pinPadding,
-                            DEFAULT_PIN_PADDING_DP), getResources().getDisplayMetrics());
-            mBarPaddingBottom = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    ta.getDimension(R.styleable.RangeBar_rangeBarPaddingBottom,
-                            DEFAULT_BAR_PADDING_BOTTOM_DP), getResources().getDisplayMetrics());
+            mExpandedPinRadius = ta.getDimension(R.styleable.RangeBar_pinRadius,
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            DEFAULT_EXPANDED_PIN_RADIUS_DP, getResources().getDisplayMetrics()));
+            mPinPadding = ta.getDimension(R.styleable.RangeBar_pinPadding, TypedValue
+                    .applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PIN_PADDING_DP,
+                            getResources().getDisplayMetrics()));
+            mBarPaddingBottom = ta.getDimension(R.styleable.RangeBar_rangeBarPaddingBottom,
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            DEFAULT_BAR_PADDING_BOTTOM_DP, getResources().getDisplayMetrics()));
             mIsRangeBar = ta.getBoolean(R.styleable.RangeBar_rangeBar, true);
             mArePinsTemporary = ta.getBoolean(R.styleable.RangeBar_temporaryPins, true);
 
             float density = getResources().getDisplayMetrics().density;
-            mMinPinFont = ta.getDimension(R.styleable.RangeBar_pinMinFont, DEFAULT_MIN_PIN_FONT_SP * density);
-            mMaxPinFont = ta.getDimension(R.styleable.RangeBar_pinMaxFont, DEFAULT_MAX_PIN_FONT_SP * density);
+            mMinPinFont = ta.getDimension(R.styleable.RangeBar_pinMinFont,
+                    DEFAULT_MIN_PIN_FONT_SP * density);
+            mMaxPinFont = ta.getDimension(R.styleable.RangeBar_pinMaxFont,
+                    DEFAULT_MAX_PIN_FONT_SP * density);
 
+            mIsRangeBar = ta.getBoolean(R.styleable.RangeBar_rangeBar, true);
         } finally {
             ta.recycle();
         }
@@ -1103,11 +1114,13 @@ public class RangeBar extends View {
 
         if (mIsRangeBar) {
             mLeftThumb = new PinView(ctx);
-            mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
+            mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor,
+                    mMinPinFont, mMaxPinFont);
         }
         mRightThumb = new PinView(ctx);
-        mRightThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
-
+        mRightThumb
+                .init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont,
+                        mMaxPinFont);
 
         float marginLeft = getMarginLeft();
         float barLength = getBarLength();
@@ -1285,11 +1298,11 @@ public class RangeBar extends View {
         final int componentLeft = getLeft() + getPaddingLeft();
         final int componentRight = getRight() - getPaddingRight() - componentLeft;
 
-        if (x<=componentLeft) {
+        if (x <= componentLeft) {
             newLeftIndex = 0;
             movePin(mLeftThumb, mBar.getLeftX());
-        } else if (x>=componentRight) {
-            newRightIndex = getTickCount()-1;
+        } else if (x >= componentRight) {
+            newRightIndex = getTickCount() - 1;
             movePin(mRightThumb, mBar.getRightX());
         }
         /// end added code
@@ -1378,7 +1391,7 @@ public class RangeBar extends View {
      * @param tickIndex the index to set the value for
      */
     private String getPinValue(int tickIndex) {
-        if (mPinTextListener!=null) {
+        if (mPinTextListener != null) {
             return mPinTextListener.getPinValue(this, tickIndex);
         }
         float tickValue = (tickIndex == (mTickCount - 1))
@@ -1423,18 +1436,20 @@ public class RangeBar extends View {
     public interface OnRangeBarChangeListener {
 
         public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
-                                          int rightPinIndex, String leftPinValue, String rightPinValue);
+                int rightPinIndex, String leftPinValue, String rightPinValue);
     }
 
     public interface PinTextFormatter {
+
         public String getText(String value);
     }
 
     /**
      * @author robmunro
-     * A callback that allows getting pin text exernally
+     *         A callback that allows getting pin text exernally
      */
     public static interface OnRangeBarTextListener {
+
         public String getPinValue(RangeBar rangeBar, int tickIndex);
     }
 
