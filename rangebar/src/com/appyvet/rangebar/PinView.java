@@ -21,6 +21,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -76,12 +77,16 @@ class PinView extends View {
 
     private Resources mRes;
 
+    private float mDensity;
+
     private Paint mCirclePaint;
 
     private float mCircleRadiusPx;
+
     private IRangeBarFormatter formatter;
 
     private float mMinPinFont = RangeBar.DEFAULT_MIN_PIN_FONT_SP;
+
     private float mMaxPinFont = RangeBar.DEFAULT_MAX_PIN_FONT_SP;
 
     // Constructors ////////////////////////////////////////////////////////////
@@ -108,14 +113,15 @@ class PinView extends View {
      * @param circleRadius the radius of the selector circle
      * @param circleColor  the color of the selector circle
      */
-    public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor, float circleRadius, int circleColor, float minFont, float maxFont) {
+    public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor,
+            float circleRadius, int circleColor, float minFont, float maxFont) {
 
         mRes = ctx.getResources();
         mPin = ctx.getResources().getDrawable(R.drawable.rotate);
 
-        float density = getResources().getDisplayMetrics().density;
-        mMinPinFont = minFont / density;
-        mMaxPinFont = maxFont / density;
+        mDensity = getResources().getDisplayMetrics().density;
+        mMinPinFont = minFont / mDensity;
+        mMaxPinFont = maxFont / mDensity;
 
         mPinPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 15, mRes.getDisplayMetrics());
@@ -254,7 +260,7 @@ class PinView extends View {
             mPin.setBounds(mBounds);
             String text = mValue;
 
-            if(this.formatter != null) {
+            if (this.formatter != null) {
                 text = formatter.format(text);
             }
 
@@ -267,6 +273,7 @@ class PinView extends View {
                     mX, mY - mPinRadiusPx - mPinPadding + mTextYPadding,
                     mTextPaint);
         }
+        super.draw(canvas);
     }
 
     // Private Methods /////////////////////////////////////////////////////////////////
@@ -275,13 +282,15 @@ class PinView extends View {
     private void calibrateTextSize(Paint paint, String text, float boxWidth) {
         paint.setTextSize(10);
 
-        float density = getResources().getDisplayMetrics().density;
         float textSize = paint.measureText(text);
-        float estimatedFontSize = boxWidth * 8 / textSize / density;
+        float estimatedFontSize = boxWidth * 8 / textSize / mDensity;
 
-        if (estimatedFontSize < mMinPinFont) estimatedFontSize = mMinPinFont;
-        else if (estimatedFontSize > mMaxPinFont) estimatedFontSize = mMaxPinFont;
-
-        paint.setTextSize(estimatedFontSize * density);
+        if (estimatedFontSize < mMinPinFont) {
+            estimatedFontSize = mMinPinFont;
+        } else if (estimatedFontSize > mMaxPinFont) {
+            estimatedFontSize = mMaxPinFont;
+        }
+        Log.d("pin", "size = " + estimatedFontSize * mDensity);
+        paint.setTextSize(estimatedFontSize * mDensity);
     }
 }
