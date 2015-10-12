@@ -79,6 +79,7 @@ class PinView extends View {
     private Paint mCirclePaint;
 
     private float mCircleRadiusPx;
+    private IRangeBarFormatter formatter;
 
     private float mMinPinFont = RangeBar.DEFAULT_MIN_PIN_FONT_SP;
     private float mMaxPinFont = RangeBar.DEFAULT_MAX_PIN_FONT_SP;
@@ -90,6 +91,10 @@ class PinView extends View {
     }
 
     // Initialization //////////////////////////////////////////////////////////
+
+    public void setFormatter(IRangeBarFormatter mFormatter) {
+        this.formatter = mFormatter;
+    }
 
     /**
      * The view is created empty with a default constructor. Use init to set all the initial
@@ -248,6 +253,11 @@ class PinView extends View {
                     (int) mX + mPinRadiusPx, (int) mY - (int) mPinPadding);
             mPin.setBounds(mBounds);
             String text = mValue;
+
+            if(this.formatter != null) {
+                text = formatter.format(text);
+            }
+
             calibrateTextSize(mTextPaint, text, mBounds.width());
             mTextPaint.getTextBounds(text, 0, text.length(), mBounds);
             mTextPaint.setTextAlign(Paint.Align.CENTER);

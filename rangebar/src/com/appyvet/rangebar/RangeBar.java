@@ -182,6 +182,9 @@ public class RangeBar extends View {
     private float mLastX;
 
     private float mLastY;
+    private IRangeBarFormatter mFormatter;
+
+    private boolean drawTicks = true;
 
     private boolean mArePinsTemporary = true;
 
@@ -340,9 +343,11 @@ public class RangeBar extends View {
         final float yPos = h - mBarPaddingBottom;
         if (mIsRangeBar) {
             mLeftThumb = new PinView(ctx);
+            mLeftThumb.setFormatter(mFormatter);
             mLeftThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
         }
         mRightThumb = new PinView(ctx);
+        mRightThumb.setFormatter(mFormatter);
         mRightThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont, mMaxPinFont);
 
         // Create the underlying bar.
@@ -386,11 +391,15 @@ public class RangeBar extends View {
         mBar.draw(canvas);
         if (mIsRangeBar) {
             mConnectingLine.draw(canvas, mLeftThumb, mRightThumb);
-            mBar.drawTicks(canvas);
+            if(drawTicks) {
+                mBar.drawTicks(canvas);
+            }
             mLeftThumb.draw(canvas);
         } else {
             mConnectingLine.draw(canvas, getMarginLeft(), mRightThumb);
-            mBar.drawTicks(canvas);
+            if(drawTicks) {
+                mBar.drawTicks(canvas);
+            }
         }
         mRightThumb.draw(canvas);
 
@@ -464,6 +473,23 @@ public class RangeBar extends View {
      */
     public void setPinTextListener(OnRangeBarTextListener mPinTextListener) {
         this.mPinTextListener = mPinTextListener;
+    }
+
+
+    public void setFormatter(IRangeBarFormatter formatter) {
+        if(mLeftThumb != null) {
+            mLeftThumb.setFormatter(formatter);
+        }
+
+        if(mRightThumb != null) {
+            mRightThumb.setFormatter(formatter);
+        }
+
+        mFormatter = formatter;
+    }
+
+    public void setDrawTicks(boolean drawTicks) {
+        this.drawTicks = drawTicks;
     }
 
     /**
