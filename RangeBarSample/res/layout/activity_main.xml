@@ -28,6 +28,7 @@
             custom:tickStart="5"
             custom:tickInterval="1"
             custom:tickEnd="10"
+            custom:pinMaxFont="10sp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"/>
 

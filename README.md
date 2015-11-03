@@ -16,6 +16,7 @@ Developers can customize the following attributes (both via XML and programatica
 
 ### Change Log
 ```
+1.1 - Merged pull requests
 1.0 - Merged pull requests to fix range bar issues and issues in scrollview, promoted to 1.0 release due to few other PRs.
 0.1 - released onto Maven Central. Fixed color pickers in sample. Added ability to set pin color via XML and pin text color via XML or programatically
 0.0.1 - 0.0.7 - Initial releases.
@@ -122,7 +123,7 @@ Installation
 
 ```groovy
 dependencies {
-    compile 'com.appyvet:materialrangebar:1.0'
+    compile 'com.appyvet:materialrangebar:1.2'
 }
 ```
 

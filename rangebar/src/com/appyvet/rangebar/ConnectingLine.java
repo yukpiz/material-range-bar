@@ -77,6 +77,7 @@ public class ConnectingLine {
      *
      * @param canvas     the Canvas to draw to
      * @param rightThumb the right thumb
+     * @param leftMargin the left margin
      */
     public void draw(Canvas canvas, float leftMargin, PinView rightThumb) {
         canvas.drawLine(leftMargin, mY, rightThumb.getX(), mY, mPaint);
