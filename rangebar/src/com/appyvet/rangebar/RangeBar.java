@@ -48,6 +48,7 @@ import java.util.HashMap;
  * RangeBar thumb will snap to the nearest tick mark.
  * This version is forked from edmodo range bar
  * https://github.com/edmodo/range-bar.git
+ * <p>
  * Clients of the RangeBar can attach a
  * {@link com.appyvet.rangebar.RangeBar.OnRangeBarChangeListener} to be notified when the pins
  * have
@@ -431,10 +432,13 @@ public class RangeBar extends View {
                 return true;
 
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
                 this.getParent().requestDisallowInterceptTouchEvent(false);
                 onActionUp(event.getX(), event.getY());
                 return true;
+                
+            case MotionEvent.ACTION_CANCEL:
+                this.getParent().requestDisallowInterceptTouchEvent(false);
+                return false;
 
             case MotionEvent.ACTION_MOVE:
                 onActionMove(event.getX());
