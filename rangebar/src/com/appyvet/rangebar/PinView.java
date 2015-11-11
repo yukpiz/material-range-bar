@@ -22,7 +22,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -90,6 +89,10 @@ class PinView extends View {
 
     private float mMaxPinFont = RangeBar.DEFAULT_MAX_PIN_FONT_SP;
 
+    private boolean mPinsAreTemporary;
+
+    private boolean mHasBeenPressed = false;
+
     // Constructors ////////////////////////////////////////////////////////////
 
     public PinView(Context context) {
@@ -112,17 +115,20 @@ class PinView extends View {
      * @param pinColor     the color of the pin
      * @param textColor    the color of the value text in the pin
      * @param circleRadius the radius of the selector circle
-     * @param circleColor  the color of the selector circle
+     * @param minFont  the minimum font size for the pin text
+     * @param maxFont  the maximum font size for the pin text
+     * @param pinsAreTemporary  whether to show the pin initially or just the circle
      */
     public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor,
-            float circleRadius, int circleColor, float minFont, float maxFont) {
+            float circleRadius, int circleColor, float minFont, float maxFont, boolean pinsAreTemporary) {
 
         mRes = ctx.getResources();
-            mPin = ContextCompat.getDrawable(ctx, R.drawable.rotate);
+        mPin = ContextCompat.getDrawable(ctx, R.drawable.rotate);
 
         mDensity = getResources().getDisplayMetrics().density;
         mMinPinFont = minFont / mDensity;
         mMaxPinFont = maxFont / mDensity;
+        mPinsAreTemporary = pinsAreTemporary;
 
         mPinPadding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 15, mRes.getDisplayMetrics());
@@ -214,6 +220,7 @@ class PinView extends View {
      */
     public void press() {
         mIsPressed = true;
+        mHasBeenPressed = true;
     }
 
     /**
@@ -254,7 +261,7 @@ class PinView extends View {
     public void draw(Canvas canvas) {
         canvas.drawCircle(mX, mY, mCircleRadiusPx, mCirclePaint);
         //Draw pin if pressed
-        if (mPinRadiusPx > 0) {
+        if (mPinRadiusPx > 0 && (mHasBeenPressed || !mPinsAreTemporary)) {
             mBounds.set((int) mX - mPinRadiusPx,
                     (int) mY - (mPinRadiusPx * 2) - (int) mPinPadding,
                     (int) mX + mPinRadiusPx, (int) mY - (int) mPinPadding);
@@ -291,7 +298,6 @@ class PinView extends View {
         } else if (estimatedFontSize > mMaxPinFont) {
             estimatedFontSize = mMaxPinFont;
         }
-        Log.d("pin", "size = " + estimatedFontSize * mDensity);
         paint.setTextSize(estimatedFontSize * mDensity);
     }
 }

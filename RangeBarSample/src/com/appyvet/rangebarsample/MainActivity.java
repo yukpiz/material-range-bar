@@ -264,14 +264,9 @@ public class MainActivity extends Activity implements
         SeekBar thumbRadiusSeek = (SeekBar) findViewById(R.id.thumbRadiusSeek);
         thumbRadiusSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser) {
-                if (progress == 0) {
-                    rangebar.setPinRadius(-1);
-                    thumbRadius.setText("Pin Radius = 30");
-                } else {
+            public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser){
                     rangebar.setPinRadius(progress);
                     thumbRadius.setText("Pin Radius = " + progress);
-                }
             }
 
             @Override

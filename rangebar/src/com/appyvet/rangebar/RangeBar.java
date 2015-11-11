@@ -349,15 +349,15 @@ public class RangeBar extends View {
             mLeftThumb = new PinView(ctx);
             mLeftThumb.setFormatter(mFormatter);
             mLeftThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize,
-                    mCircleColor, mMinPinFont, mMaxPinFont);
+                    mCircleColor, mMinPinFont, mMaxPinFont, mArePinsTemporary);
         }
         mRightThumb = new PinView(ctx);
         mRightThumb.setFormatter(mFormatter);
         mRightThumb.init(ctx, yPos, expandedPinRadius, mPinColor, mTextColor, mCircleSize,
-                mCircleColor, mMinPinFont, mMaxPinFont);
+                mCircleColor, mMinPinFont, mMaxPinFont, mArePinsTemporary);
 
         // Create the underlying bar.
-        final float marginLeft = mExpandedPinRadius;
+        final float marginLeft = Math.max(mExpandedPinRadius, mCircleSize);
 
         final float barLength = w - (2 * marginLeft);
         mBar = new Bar(ctx, marginLeft, yPos, barLength, mTickCount, mTickHeightDP, mTickColor,
@@ -431,6 +431,10 @@ public class RangeBar extends View {
                 return true;
 
             case MotionEvent.ACTION_UP:
+                this.getParent().requestDisallowInterceptTouchEvent(false);
+                onActionUp(event.getX(), event.getY());
+                return true;
+
             case MotionEvent.ACTION_CANCEL:
                 this.getParent().requestDisallowInterceptTouchEvent(false);
                 onActionUp(event.getX(), event.getY());
@@ -477,7 +481,7 @@ public class RangeBar extends View {
      * Sets a listener to modify the text
      *
      * @param mPinTextListener the RangeBar pin text notification listener; null to remove any
-     *                 existing listener
+     *                         existing listener
      */
     public void setPinTextListener(OnRangeBarTextListener mPinTextListener) {
         this.mPinTextListener = mPinTextListener;
@@ -689,7 +693,8 @@ public class RangeBar extends View {
     /**
      * Set if the pins should dissapear after released
      *
-     * @param arePinsTemporary Boolean - true if pins shoudl dissapear after released, false to stay
+     * @param arePinsTemporary Boolean - true if pins shoudl dissapear after released, false to
+     *                         stay
      *                         drawn
      */
     public void setTemporaryPins(boolean arePinsTemporary) {
@@ -935,6 +940,24 @@ public class RangeBar extends View {
     }
 
     /**
+     * Gets the value of the left pin.
+     *
+     * @return the string value of the left pin.
+     */
+    public String getLeftPinValue() {
+        return getPinValue(mLeftIndex);
+    }
+
+    /**
+     * Gets the value of the right pin.
+     *
+     * @return the string value of the right pin.
+     */
+    public String getRightPinValue() {
+        return getPinValue(mRightIndex);
+    }
+
+    /**
      * Gets the index of the left-most pin.
      *
      * @return the 0-based index of the left pin
@@ -1055,8 +1078,9 @@ public class RangeBar extends View {
             mConnectingLineColor = ta.getColor(R.styleable.RangeBar_connectingLineColor,
                     DEFAULT_CONNECTING_LINE_COLOR);
             mActiveConnectingLineColor = mConnectingLineColor;
-            mExpandedPinRadius = ta.getDimension(R.styleable.RangeBar_pinRadius,
-                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            mExpandedPinRadius = ta
+                    .getDimension(R.styleable.RangeBar_pinRadius, TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
                             DEFAULT_EXPANDED_PIN_RADIUS_DP, getResources().getDisplayMetrics()));
             mPinPadding = ta.getDimension(R.styleable.RangeBar_pinPadding, TypedValue
                     .applyDimension(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_PIN_PADDING_DP,
@@ -1117,12 +1141,12 @@ public class RangeBar extends View {
         if (mIsRangeBar) {
             mLeftThumb = new PinView(ctx);
             mLeftThumb.init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor,
-                    mMinPinFont, mMaxPinFont);
+                    mMinPinFont, mMaxPinFont, false);
         }
         mRightThumb = new PinView(ctx);
         mRightThumb
                 .init(ctx, yPos, 0, mPinColor, mTextColor, mCircleSize, mCircleColor, mMinPinFont,
-                        mMaxPinFont);
+                        mMaxPinFont, false);
 
         float marginLeft = getMarginLeft();
         float barLength = getBarLength();
@@ -1144,7 +1168,7 @@ public class RangeBar extends View {
      * @return float marginLeft
      */
     private float getMarginLeft() {
-        return mExpandedPinRadius;
+        return Math.max(mExpandedPinRadius, mCircleSize);
     }
 
     /**
@@ -1422,7 +1446,7 @@ public class RangeBar extends View {
         // do not move the thumbs past the edge.
         if (x < mBar.getLeftX() || x > mBar.getRightX()) {
             // Do nothing.
-        } else {
+        } else if (thumb != null) {
             thumb.setX(x);
             invalidate();
         }
