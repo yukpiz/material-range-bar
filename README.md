@@ -47,6 +47,8 @@ connectingLineColor | reference or color
 ```
 pinPadding | dimension
 pinRadius | dimension
+pinMinFont | dimension
+pinMaxFont | dimension
 pinColor | reference or color
 textColor | reference or color
 temporaryPins | boolean
