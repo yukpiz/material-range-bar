@@ -111,6 +111,19 @@ rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             }
         });
 ```
+## Adding a formatter
+Formats the text inside the pin.
+- Add a formater - IRangeBarFormatter which will return the value of the current text inside of the pin
+- Transform string s into any string you want and return the newly formated string. 
+```java
+rangebar.setFormatter(new IRangeBarFormatter() {
+            @Override
+			public String format(String s) {
+				// Transform the String s here then return s
+                return null;
+            }
+        });
+```
 TODO
 =======
 - Better instructions.
