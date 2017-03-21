@@ -1,10 +1,6 @@
 
 package com.appyvet.rangebarsample;
 
-import com.appyvet.rangebar.RangeBar;
-import com.appyvet.rangebarsample.colorpicker.ColorPickerDialog;
-import com.appyvet.rangebarsample.colorpicker.Utils;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +11,10 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.appyvet.rangebar.RangeBar;
+import com.appyvet.rangebarsample.colorpicker.ColorPickerDialog;
+import com.appyvet.rangebarsample.colorpicker.Utils;
 
 public class MainActivity extends Activity implements
         ColorPickerDialog.OnColorSelectedListener {
@@ -36,6 +36,8 @@ public class MainActivity extends Activity implements
     private RangeBar rangebar;
 
     private int mSelectorColor;
+
+    private int mSelectorBoundaryColor;
 
     // Saves the state upon rotating the screen/restarting the activity
     @Override
@@ -60,6 +62,7 @@ public class MainActivity extends Activity implements
 
         // Gets the buttons references for the buttons
         final TextView barColor = (TextView) findViewById(R.id.barColor);
+        final TextView selectorBoundaryColor = (TextView) findViewById(R.id.selectorBoundaryColor);
         final TextView connectingLineColor = (TextView) findViewById(R.id.connectingLineColor);
         final TextView pinColor = (TextView) findViewById(R.id.pinColor);
         final TextView pinTextColor = (TextView) findViewById(R.id.textColor);
@@ -101,8 +104,8 @@ public class MainActivity extends Activity implements
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex,
-                    int rightPinIndex,
-                    String leftPinValue, String rightPinValue) {
+                                              int rightPinIndex,
+                                              String leftPinValue, String rightPinValue) {
                 leftIndexValue.setText("" + leftPinIndex);
                 rightIndexValue.setText("" + rightPinIndex);
             }
@@ -245,7 +248,7 @@ public class MainActivity extends Activity implements
         connectingLineWeightSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar connectingLineWeightSeek, int progress,
-                    boolean fromUser) {
+                                          boolean fromUser) {
                 rangebar.setConnectingLineWeight(progress);
                 connectingLineWeight.setText("connectingLineWeight = " + progress);
             }
@@ -264,9 +267,28 @@ public class MainActivity extends Activity implements
         SeekBar thumbRadiusSeek = (SeekBar) findViewById(R.id.thumbRadiusSeek);
         thumbRadiusSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser){
-                    rangebar.setPinRadius(progress);
-                    thumbRadius.setText("Pin Radius = " + progress);
+            public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser) {
+                rangebar.setPinRadius(progress);
+                thumbRadius.setText("Pin Radius = " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        // Sets thumbRadius
+        final TextView thumbBoundarySize = (TextView) findViewById(R.id.thumbBoundarySize);
+        SeekBar thumbBoundarySeek = (SeekBar) findViewById(R.id.thumbBoundarySeek);
+        thumbBoundarySeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar thumbRadiusSeek, int progress, boolean fromUser) {
+                rangebar.setSelectorBoundarySize(progress);
+                thumbBoundarySize.setText("Selector Boundary Size = " + progress);
             }
 
             @Override
@@ -320,6 +342,13 @@ public class MainActivity extends Activity implements
             }
         });
 
+        selectorBoundaryColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initColorPicker(Component.SELECTOR_BOUNDARY_COLOR, mSelectorBoundaryColor, mSelectorBoundaryColor);
+            }
+        });
+
     }
 
     /**
@@ -331,7 +360,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onColorSelected(int newColor, Component component) {
-        Log.d("Color selected"," new color = "+newColor+ ",compoment = "+component);
+        Log.d("Color selected", " new color = " + newColor + ",compoment = " + component);
         String hexColor = String.format("#%06X", (0xFFFFFF & newColor));
 
         switch (component) {
@@ -380,7 +409,15 @@ public class MainActivity extends Activity implements
                 selectorColorText.setText("selectorColor = " + hexColor);
                 selectorColorText.setTextColor(newColor);
                 break;
+            case SELECTOR_BOUNDARY_COLOR:
+                mSelectorBoundaryColor = newColor;
+                rangebar.setSelectorBoundaryColor(newColor);
+                final TextView selectorBoundaryColorText = (TextView) findViewById(R.id.selectorBoundaryColor);
+                selectorBoundaryColorText.setText("Selector Boundary Color = " + hexColor);
+                selectorBoundaryColorText.setTextColor(newColor);
+                break;
         }
+
     }
 
 

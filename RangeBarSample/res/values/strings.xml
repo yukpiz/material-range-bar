@@ -13,6 +13,8 @@
     <string name="connectingLineWeight">Connecting Line Weight = 4</string>
     <string name="connectingLineColor">Connecting Line Color = #3F51B5</string>
     <string name="thumbRadius">Pin Size = 30</string>
+    <string name="selectorBoundarySize">Selector Boundary Size = 1</string>
+    <string name="selectorBoundaryColor">Selector Boundary Color = #3F51B5</string>
     <string name="thumbColorNormal">Pin Color = #3F51B5</string>
     <string name="selectorColorNormal">Selector Color = #3F51B5</string>
     <string name="tickColorNormal">Tick Color = #000000</string>
