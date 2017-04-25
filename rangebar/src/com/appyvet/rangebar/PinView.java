@@ -81,6 +81,8 @@ class PinView extends View {
 
     private Paint mCirclePaint;
 
+    private Paint mCircleBoundaryPaint;
+
     private float mCircleRadiusPx;
 
     private IRangeBarFormatter formatter;
@@ -109,18 +111,21 @@ class PinView extends View {
      * The view is created empty with a default constructor. Use init to set all the initial
      * variables for the pin
      *
-     * @param ctx          Context
-     * @param y            The y coordinate to raw the pin (i.e. the bar location)
-     * @param pinRadiusDP  the initial size of the pin
-     * @param pinColor     the color of the pin
-     * @param textColor    the color of the value text in the pin
-     * @param circleRadius the radius of the selector circle
-     * @param minFont  the minimum font size for the pin text
-     * @param maxFont  the maximum font size for the pin text
-     * @param pinsAreTemporary  whether to show the pin initially or just the circle
+     * @param ctx                 Context
+     * @param y                   The y coordinate to raw the pin (i.e. the bar location)
+     * @param pinRadiusDP         the initial size of the pin
+     * @param pinColor            the color of the pin
+     * @param textColor           the color of the value text in the pin
+     * @param circleRadius        the radius of the selector circle
+     * @param circleColor         the color of the selector circle
+     * @param circleBoundaryColor The color of the selector circle boundary
+     * @param circleBoundarySize  The size of the selector circle boundary line
+     * @param minFont             the minimum font size for the pin text
+     * @param maxFont             the maximum font size for the pin text
+     * @param pinsAreTemporary    whether to show the pin initially or just the circle
      */
     public void init(Context ctx, float y, float pinRadiusDP, int pinColor, int textColor,
-            float circleRadius, int circleColor, float minFont, float maxFont, boolean pinsAreTemporary) {
+                     float circleRadius, int circleColor, int circleBoundaryColor, float circleBoundarySize, float minFont, float maxFont, boolean pinsAreTemporary) {
 
         mRes = ctx.getResources();
         mPin = ContextCompat.getDrawable(ctx, R.drawable.rotate);
@@ -160,6 +165,13 @@ class PinView extends View {
         mCirclePaint.setColor(circleColor);
         mCirclePaint.setAntiAlias(true);
 
+        if (circleBoundarySize != 0) {
+            mCircleBoundaryPaint = new Paint();
+            mCircleBoundaryPaint.setStyle(Paint.Style.STROKE);
+            mCircleBoundaryPaint.setColor(circleBoundaryColor);
+            mCircleBoundaryPaint.setStrokeWidth(circleBoundarySize);
+            mCircleBoundaryPaint.setAntiAlias(true);
+        }
         //Color filter for the selection pin
         mPinFilter = new LightingColorFilter(pinColor, pinColor);
 
@@ -259,6 +271,10 @@ class PinView extends View {
     //Draw the circle regardless of pressed state. If pin size is >0 then also draw the pin and text
     @Override
     public void draw(Canvas canvas) {
+        //Draw the circle boundary only if mCircleBoundaryPaint was initialized
+        if (mCircleBoundaryPaint != null)
+            canvas.drawCircle(mX, mY, mCircleRadiusPx, mCircleBoundaryPaint);
+
         canvas.drawCircle(mX, mY, mCircleRadiusPx, mCirclePaint);
         //Draw pin if pressed
         if (mPinRadiusPx > 0 && (mHasBeenPressed || !mPinsAreTemporary)) {

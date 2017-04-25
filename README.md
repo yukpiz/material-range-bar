@@ -58,6 +58,8 @@ temporaryPins | boolean
 ```
 selectorColor | reference or color
 selectorSize | dimension
+selectorBoundaryColor | reference or color
+selectorBoundarySize | dimension
 ```
 
 ### Via runtime only (no XML option)
