@@ -8,7 +8,7 @@
         <attr name="tickColor" format="color"/>
         <attr name="barWeight" format="dimension"/>
         <attr name="rangeBarColor" format="reference|color"/>
-        <attr name="textColor" format="reference|color"/>
+        <attr name="rangeBarTextColor" format="reference|color"/>
         <attr name="pinColor" format="reference|color"/>
         <attr name="selectorSize" format="dimension"/>
         <attr name="selectorBoundaryColor" format="reference|color"/>
