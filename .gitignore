@@ -35,3 +35,6 @@ out
 # Gradle folder
 .gradle/
 build/
+
+# Vim swp
+*.swp
