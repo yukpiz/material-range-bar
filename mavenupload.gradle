@@ -1,0 +1,16 @@
+def repo = new File(rootDir, mavenPublishDir)
+def groupId = mavenGroupId
+def libName = mavenLibName
+def versionName = android.defaultConfig.versionName
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: "file://${repo.absolutePath}"
+            pom.version =  "${versionName}"
+            pom.groupId = "${groupId}"
+            pom.artifactId = "${libName}"
+        }
+    }
+}
